@@ -107,7 +107,7 @@ export default function FilterSidebar({
         <div className="filter-group">
           <label className="filter-group-label">
             <Layers size={15} />
-            <span>Paper Category (30/Subject)</span>
+            <span>Paper Category (40/Subject)</span>
           </label>
           <div className="tier-pill-stack">
             {TIERS.map(t => (

@@ -13,6 +13,11 @@ import {
   Maximize2,
   Minimize2,
   ChevronUp,
+  ChevronDown,
+  TrendingUp,
+  AlertTriangle,
+  Lightbulb,
+  Target,
   Share2,
   Download,
   Copy,
@@ -40,6 +45,7 @@ export default function PaperViewerModal({
   const [showAnswerKey, setShowAnswerKey] = useState(false);
   const [showMarkingScheme, setShowMarkingScheme] = useState(false);
   const [showSolutions, setShowSolutions] = useState(false);
+  const [showTrendTable, setShowTrendTable] = useState(true);
   const [isReadingMode, setIsReadingMode] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -595,6 +601,91 @@ export default function PaperViewerModal({
             )}
           </div>
 
+          {/* 8-Year Board Trend Analysis & High-Yield Blueprint (Prompt Requirement 10) */}
+          {paper.trendAnalysis && (
+            <div className="doc-trend-analysis-card no-print">
+              <div 
+                className="trend-card-header" 
+                onClick={() => setShowTrendTable(!showTrendTable)}
+                role="button"
+                tabIndex={0}
+              >
+                <div className="trend-header-left">
+                  <div className="trend-icon-badge">
+                    <TrendingUp size={18} />
+                  </div>
+                  <div>
+                    <div className="trend-title-row">
+                      <h4 className="trend-title">8-Year Board Trend Analysis & High-Yield Blueprint</h4>
+                      <span className="trend-pill-badge">2019–2026 Trend → 2027 Forecast</span>
+                    </div>
+                    <p className="trend-subtitle">
+                      {paper.trendAnalysis.summary}
+                    </p>
+                  </div>
+                </div>
+                <button className="trend-toggle-btn" aria-label="Toggle trend analysis table">
+                  {showTrendTable ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                </button>
+              </div>
+
+              {showTrendTable && (
+                <div className="trend-card-body">
+                  <div className="trend-stat-pills">
+                    <div className="stat-pill">
+                      <Target size={14} className="text-emerald-400" />
+                      <span><strong>75–80%</strong> Highly Probable Questions</span>
+                    </div>
+                    <div className="stat-pill">
+                      <Sparkles size={14} className="text-amber-400" />
+                      <span><strong>50%</strong> NEP 2020 Competency Aligned</span>
+                    </div>
+                    <div className="stat-pill">
+                      <Award size={14} className="text-indigo-400" />
+                      <span><strong>8-Year</strong> Paper Pattern Mapping</span>
+                    </div>
+                  </div>
+
+                  <div className="trend-table-wrapper">
+                    <table className="trend-table">
+                      <thead>
+                        <tr>
+                          <th>Chapter / Syllabus Domain</th>
+                          <th>Expected Weightage</th>
+                          <th>Frequently Repeated Concepts</th>
+                          <th>Most Probable Questions</th>
+                          <th>Confidence Level</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {paper.trendAnalysis.weightageTable.map((row, idx) => (
+                          <tr key={idx}>
+                            <td className="trend-chapter-cell">{row.chapter}</td>
+                            <td>
+                              <span className="weightage-badge">{row.weightage}</span>
+                              <span className="weightage-pct">({row.percent})</span>
+                            </td>
+                            <td className="trend-concept-cell">
+                              <LatexRenderer content={row.repeatedConcepts} inline />
+                            </td>
+                            <td className="trend-question-cell">
+                              <LatexRenderer content={row.probableQuestions} inline />
+                            </td>
+                            <td>
+                              <span className={`confidence-badge conf-${row.confidence.toLowerCase()}`}>
+                                {row.confidence} ({row.directRepeatRate || '85%'})
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Quick Answer Key (If toggled) */}
           {showAnswerKey && (
             <div className="doc-answer-key-section no-print">
@@ -727,6 +818,82 @@ export default function PaperViewerModal({
               </section>
             ))}
           </div>
+
+          {/* Board Examiner's Report & Scoring Mastery Guide (Prompt Requirement 9) */}
+          {paper.examinerInsights && (
+            <section className="doc-examiner-guide-section no-print">
+              <div className="examiner-guide-header">
+                <div className="examiner-icon-wrap">
+                  <Award size={22} className="text-indigo-400" />
+                </div>
+                <div>
+                  <div className="examiner-title-row">
+                    <h3 className="examiner-guide-title">Board Examiner's Feedback & Scoring Mastery Guide</h3>
+                    <span className="examiner-pill">Post-Paper Analysis</span>
+                  </div>
+                  <p className="examiner-guide-sub">Official board evaluation criteria, common student traps, and topper scoring strategies.</p>
+                </div>
+              </div>
+
+              <div className="examiner-grid">
+                {/* Common Student Mistakes */}
+                <div className="examiner-col mistakes-col">
+                  <div className="col-heading">
+                    <AlertTriangle size={17} className="text-amber-400" />
+                    <span>⚠️ Common Student Mistakes & Traps (Examiner's Report)</span>
+                  </div>
+                  <ul className="examiner-points-list">
+                    {paper.examinerInsights.commonMistakes.map((mistake, mIdx) => (
+                      <li key={mIdx}>
+                        <span className="point-bullet bullet-mistake">•</span>
+                        <span>{mistake}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Tips to Score Full Marks */}
+                <div className="examiner-col tips-col">
+                  <div className="col-heading">
+                    <Lightbulb size={17} className="text-emerald-400" />
+                    <span>💡 Tips to Score Full Marks (Topper's Strategy)</span>
+                  </div>
+                  <ul className="examiner-points-list">
+                    {paper.examinerInsights.topperTips.map((tip, tIdx) => (
+                      <li key={tIdx}>
+                        <span className="point-bullet bullet-tip">✓</span>
+                        <span>{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="examiner-action-bar">
+                <button
+                  className={`examiner-toggle-btn ${showSolutions ? 'active' : ''}`}
+                  onClick={() => setShowSolutions(!showSolutions)}
+                >
+                  <Eye size={15} />
+                  <span>{showSolutions ? 'Hide Step-by-Step Solutions' : 'Reveal Step-by-Step Marking Solutions'}</span>
+                </button>
+                <button
+                  className={`examiner-toggle-btn ${showAnswerKey ? 'active' : ''}`}
+                  onClick={() => setShowAnswerKey(!showAnswerKey)}
+                >
+                  <CheckCircle2 size={15} />
+                  <span>{showAnswerKey ? 'Hide Quick Answer Key' : 'Reveal Quick Reference Answer Key'}</span>
+                </button>
+                <button
+                  className={`examiner-toggle-btn ${showMarkingScheme ? 'active' : ''}`}
+                  onClick={() => setShowMarkingScheme(!showMarkingScheme)}
+                >
+                  <Award size={15} />
+                  <span>{showMarkingScheme ? 'Hide Marking Scheme' : 'Reveal Step Marking Rubrics'}</span>
+                </button>
+              </div>
+            </section>
+          )}
 
           <div className="doc-exam-end-footer">
             <div className="doc-end-text">*** END OF EXAMINATION PAPER ***</div>

@@ -9,6 +9,7 @@
 
 import { getBlueprint } from './blueprint2026.js';
 import { generate2026AlignedSections } from './questionGenerator.js';
+import { getSubjectTrendAnalysis } from './trendAnalysis.js';
 
 export const BOARDS = ['CBSE', 'ICSE', 'IB'];
 export const CLASSES = ['10', '12'];
@@ -43,8 +44,8 @@ export const SUBJECTS_BY_CLASS = {
 export const YEARS = ['2027', '2026', '2025', '2024', '2023', '2022', '2021', '2020'];
 export const DIFFICULTIES = ['Easy', 'Medium', 'Hard'];
 export const TIERS = [
-  { id: 'all', label: 'All 30 Papers' },
-  { id: 'practice', label: '10 Original Practice Papers', badge: 'Practice (AI-Authored)' },
+  { id: 'all', label: 'All 40 Papers' },
+  { id: 'practice', label: '20 Original Practice Papers', badge: 'Practice (AI-Authored)' },
   { id: 'model', label: '10 Model / Sample Papers', badge: 'Model / Blueprint' },
   { id: 'pyq', label: '10 Previous-Year Archives', badge: 'Official Archive / PYQ' },
 ];
@@ -271,8 +272,8 @@ ${sectionsLatex}
 }
 
 /**
- * Generate 30 Papers per subject:
- * - 10 Original Practice Papers (AI-generated, unique, 2026 blueprint-aligned)
+ * Generate 40 Papers per subject:
+ * - 20 Original Practice Papers (AI-generated, unique, 2027 blueprint & 8-year trend aligned)
  * - 10 Model/Sample Papers (Curriculum sample blueprints)
  * - 10 Previous-Year Papers (Metadata, verified board links & copyright-safe archives)
  */
@@ -287,11 +288,12 @@ export function buildQuestionPaperCatalog() {
         const subjectId = subj.id;
         const chapters = CHAPTERS_BY_SUBJECT[subjectId] || ['Core Syllabus Unit 1', 'Core Syllabus Unit 2', 'Core Syllabus Unit 3'];
         const blueprint = getBlueprint(board, classLevel, subjectId);
+        const trendAnalysis = getSubjectTrendAnalysis(subjectId, classLevel, board);
 
-        // 1. 10 Original Practice Papers (Practice 1 to 10)
-        for (let i = 1; i <= 10; i++) {
+        // 1. 20 Original Practice Papers (Practice 1 to 20 — 10 High-Yield Added)
+        for (let i = 1; i <= 20; i++) {
           const year = YEARS[(i - 1) % YEARS.length];
-          const difficulty = i <= 3 ? 'Easy' : (i <= 7 ? 'Medium' : 'Hard');
+          const difficulty = i <= 6 ? 'Easy' : (i <= 14 ? 'Medium' : 'Hard');
           const paperId = `${board.toLowerCase()}-${classLevel}-${subjectId}-practice-${i}`;
           const sections = generate2026AlignedSections(subjectId, classLevel, i, 'practice', board);
 
@@ -305,7 +307,7 @@ export function buildQuestionPaperCatalog() {
             subjectId,
             tier: 'practice',
             tierTitle: `Original Practice Paper #${i}`,
-            badge: 'AI-Authored Practice',
+            badge: i <= 10 ? 'AI-Authored Practice' : 'Predicted High-Yield Set',
             academicSession: '2027',
             year: '2027',
             durationMinutes: blueprint.durationMinutes,
@@ -319,6 +321,11 @@ export function buildQuestionPaperCatalog() {
               chapters[(i + 1) % chapters.length]
             ],
             sections,
+            trendAnalysis,
+            examinerInsights: {
+              commonMistakes: trendAnalysis.commonMistakes,
+              topperTips: trendAnalysis.topperTips
+            },
             pattern2026: {
               isAligned: true,
               year: '2027',
@@ -367,6 +374,11 @@ export function buildQuestionPaperCatalog() {
             questionCount: blueprint.totalQuestions,
             chaptersCovered: chapters.slice(0, 4),
             sections,
+            trendAnalysis,
+            examinerInsights: {
+              commonMistakes: trendAnalysis.commonMistakes,
+              topperTips: trendAnalysis.topperTips
+            },
             pattern2026: {
               isAligned: true,
               year: '2027',
@@ -422,6 +434,11 @@ export function buildQuestionPaperCatalog() {
             questionCount: blueprint.totalQuestions,
             chaptersCovered: chapters,
             sections,
+            trendAnalysis,
+            examinerInsights: {
+              commonMistakes: trendAnalysis.commonMistakes,
+              topperTips: trendAnalysis.topperTips
+            },
             pattern2026: {
               isAligned: true,
               year: '2027',
