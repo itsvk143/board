@@ -19,7 +19,7 @@ export default function Navbar({
           </div>
           <div>
             <div className="brand-title">
-              Class<span className="brand-highlight">Board</span>
+              LV Institute <span className="brand-highlight">Board</span>
               <span className="brand-badge">v2.4</span>
             </div>
             <div className="brand-subtitle">
