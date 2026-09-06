@@ -1,5 +1,5 @@
 /**
- * Authentic Board Question Banks and 2026 Pattern Aligned Section Generators
+ * Authentic Board Question Banks and 2027 Pattern Aligned Section Generators
  * Generates verified LaTeX math/science equations, Assertion-Reasoning items,
  * and NEP 2020 Case-Based Competency assessment units.
  */

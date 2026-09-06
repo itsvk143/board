@@ -252,7 +252,7 @@ function generateLatexDocument(paper) {
 \\hrule
 \\vspace{1em}
 
-\\noindent\\textbf{General Instructions (Official 2026 Blueprint):}
+\\noindent\\textbf{General Instructions (Official 2027 Blueprint):}
 \\begin{enumerate}
     \\item This question paper contains ${paper.sections.length} sections (${paper.sections.map(s => s.sectionId).join(', ')}).
     \\item All questions are compulsory. Internal choices are provided in certain questions.
@@ -321,7 +321,7 @@ export function buildQuestionPaperCatalog() {
             sections,
             pattern2026: {
               isAligned: true,
-              year: '2026',
+              year: '2027',
               blueprintName: blueprint.name,
               competencyPercent: blueprint.competencyPercent,
               sectionsCount: blueprint.sections.length,
@@ -369,7 +369,7 @@ export function buildQuestionPaperCatalog() {
             sections,
             pattern2026: {
               isAligned: true,
-              year: '2026',
+              year: '2027',
               blueprintName: blueprint.name,
               competencyPercent: blueprint.competencyPercent,
               sectionsCount: blueprint.sections.length,
@@ -424,7 +424,7 @@ export function buildQuestionPaperCatalog() {
             sections,
             pattern2026: {
               isAligned: true,
-              year: '2026',
+              year: '2027',
               blueprintName: blueprint.name,
               competencyPercent: blueprint.competencyPercent,
               sectionsCount: blueprint.sections.length,

@@ -190,7 +190,7 @@ export default function PaperViewerModal({
                 {paper.pattern2026 && (
                   <>
                     <span className="dot">•</span>
-                    <span className="toolbar-2026-badge">2026 Pattern</span>
+                    <span className="toolbar-2026-badge">2027 Pattern</span>
                   </>
                 )}
               </div>

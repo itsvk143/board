@@ -106,9 +106,9 @@ export default function PaperCard({
         {/* Pedagogical Feature Badges */}
         <div className="paper-features-bar">
           {paper.pattern2026 && (
-            <span className="feature-pill pattern-2026-badge" title="Aligned with Official 2026 Board Examination Blueprint">
+            <span className="feature-pill pattern-2026-badge" title="Aligned with Official 2027 Board Examination Blueprint">
               <Sparkles size={12} className="text-amber-400" />
-              <span>2026 Pattern</span>
+              <span>2027 Pattern</span>
             </span>
           )}
           <span className="feature-pill" title="KaTeX Formulas live rendered">

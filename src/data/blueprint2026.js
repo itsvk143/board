@@ -6,7 +6,7 @@
 export const BLUEPRINT_2026 = {
   CBSE: {
     '10': {
-      name: 'CBSE Class 10 NEP 2020 Competency Blueprint (2026)',
+      name: 'CBSE Class 10 NEP 2020 Competency Blueprint (2027)',
       board: 'CBSE',
       classLevel: '10',
       totalQuestions: 38,
@@ -65,7 +65,7 @@ export const BLUEPRINT_2026 = {
       ]
     },
     '12-science': {
-      name: 'CBSE Class 12 Science (Physics / Chemistry / Biology) Blueprint (2026)',
+      name: 'CBSE Class 12 Science (Physics / Chemistry / Biology) Blueprint (2027)',
       board: 'CBSE',
       classLevel: '12',
       totalQuestions: 33,
@@ -124,7 +124,7 @@ export const BLUEPRINT_2026 = {
       ]
     },
     '12-math': {
-      name: 'CBSE Class 12 Mathematics Blueprint (2026)',
+      name: 'CBSE Class 12 Mathematics Blueprint (2027)',
       board: 'CBSE',
       classLevel: '12',
       totalQuestions: 38,
@@ -183,7 +183,7 @@ export const BLUEPRINT_2026 = {
       ]
     },
     '12-cs': {
-      name: 'CBSE Class 12 Computer Science Blueprint (2026)',
+      name: 'CBSE Class 12 Computer Science Blueprint (2027)',
       board: 'CBSE',
       classLevel: '12',
       totalQuestions: 35,
@@ -245,7 +245,7 @@ export const BLUEPRINT_2026 = {
 
   ICSE: {
     '10': {
-      name: 'ICSE Class 10 Specimen 2026 Blueprint',
+      name: 'ICSE Class 10 Specimen 2027 Blueprint',
       board: 'ICSE',
       classLevel: '10',
       totalQuestions: 24,
@@ -274,7 +274,7 @@ export const BLUEPRINT_2026 = {
       ]
     },
     '12': {
-      name: 'ISC Class 12 Specimen 2026 Blueprint',
+      name: 'ISC Class 12 Specimen 2027 Blueprint',
       board: 'ICSE',
       classLevel: '12',
       totalQuestions: 22,
@@ -323,7 +323,7 @@ export const BLUEPRINT_2026 = {
 
   IB: {
     '10': {
-      name: 'IB MYP eAssessment 2026 Blueprint',
+      name: 'IB MYP eAssessment 2027 Blueprint',
       board: 'IB',
       classLevel: '10',
       totalQuestions: 16,
@@ -351,7 +351,7 @@ export const BLUEPRINT_2026 = {
       ]
     },
     '12': {
-      name: 'IB Diploma Programme (DP) 2026 Assessment Model',
+      name: 'IB Diploma Programme (DP) 2027 Assessment Model',
       board: 'IB',
       classLevel: '12',
       totalQuestions: 18,
