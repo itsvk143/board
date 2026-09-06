@@ -60,7 +60,7 @@ export default function SubjectDirectory({
             Browse <span className="brand-highlight">Class {currentClass}th</span> Subjects
           </h2>
           <p className="subject-dir-subtitle">
-            Explore <strong>30 complete question papers per subject</strong> for {filters.board} Class {currentClass}th (10 Original Practice Papers, 10 Blueprint Model Sets, and 10 Archival PYQ Sessions) with live LaTeX equations & step-by-step solutions.
+            Explore <strong>40 complete question papers per subject</strong> for {filters.board} Class {currentClass}th (20 Original Practice Papers, 10 Blueprint Model Sets, and 10 Archival PYQ Sessions) with live LaTeX equations & step-by-step solutions.
           </p>
         </div>
 
@@ -110,12 +110,12 @@ export default function SubjectDirectory({
                       <div className="subj-card-body">
                         <h3 className="subj-card-name">{subj.name}</h3>
                         <div className="subj-papers-meta">
-                          <strong>30 Question Papers</strong> per Board
+                          <strong>40 Question Papers</strong> per Board
                         </div>
 
                         {/* 3-Tier Breakdown Badges */}
                         <div className="subj-tier-breakdown">
-                          <span className="tier-pill-mini practice">10 Practice</span>
+                          <span className="tier-pill-mini practice">20 Practice</span>
                           <span className="tier-pill-mini model">10 Model</span>
                           <span className="tier-pill-mini pyq">10 PYQs</span>
                         </div>
@@ -139,7 +139,7 @@ export default function SubjectDirectory({
                       {/* Card Footer Button */}
                       <div className="subj-card-footer">
                         <span className="subj-explore-text">
-                          {isSelected ? 'Viewing Papers Below' : 'Explore 30 Papers'}
+                          {isSelected ? 'Viewing Papers Below' : 'Explore 40 Papers'}
                         </span>
                         <ArrowRight size={15} className="subj-arrow-icon" />
                       </div>

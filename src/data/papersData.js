@@ -1,7 +1,7 @@
 /**
  * Comprehensive Question Paper Library Data Store
  * Fully compliant with copyright & board requirements:
- * - 30 Papers per subject (10 Practice, 10 Model, 10 Archival PYQ Metadata)
+ * - 40 Papers per subject (20 Practice, 10 Model, 10 Archival PYQ Metadata)
  * - Coverage: CBSE, ICSE, IB for Class 10 & 12
  * - Aligned 100% with the Official 2026 Board Examination Blueprint (Sections A-E, 50% Competency, Case Studies)
  * - KaTeX math/science typesetting, answer keys, marking rubrics, and step-by-step solutions.

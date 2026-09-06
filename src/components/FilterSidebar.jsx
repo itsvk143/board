@@ -103,7 +103,7 @@ export default function FilterSidebar({
       </div>
 
       <div className="filter-scrollable-body">
-        {/* Tier / Paper Distribution (The 30-Paper Split) */}
+        {/* Tier / Paper Distribution (The 40-Paper Split) */}
         <div className="filter-group">
           <label className="filter-group-label">
             <Layers size={15} />
