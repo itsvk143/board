@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Bookmark, Heart, Sparkles, Search, SlidersHorizontal } from 'lucide-react';
+import { BookOpen, Bookmark, Heart, Sparkles, Search, SlidersHorizontal, Sun, Moon } from 'lucide-react';
 
 export default function Navbar({
   filters,
@@ -8,6 +8,8 @@ export default function Navbar({
   bookmarksCount,
   favoritesCount,
   onOpenMobileFilters,
+  theme,
+  onToggleTheme,
 }) {
   return (
     <header className="navbar-root">
@@ -108,6 +110,20 @@ export default function Navbar({
           >
             <Heart size={18} className={filters.onlyFavorites ? 'fill-rose-500 text-rose-500' : ''} />
             <span className="btn-count-badge">{favoritesCount}</span>
+          </button>
+
+          {/* Theme Toggle Button */}
+          <button
+            className="icon-nav-btn theme-toggle-btn"
+            onClick={onToggleTheme}
+            title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? (
+              <Sun size={18} className="text-amber-400" />
+            ) : (
+              <Moon size={18} className="text-indigo-600" />
+            )}
           </button>
 
           {/* Mobile Filters Toggle */}

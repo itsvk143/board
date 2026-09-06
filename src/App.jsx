@@ -51,6 +51,20 @@ export default function App() {
   const [activePaper, setActivePaper] = useState(null);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
+  // Theme State (Dark / Light)
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('board_theme') || 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('board_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
   // Save changes to localStorage
   useEffect(() => {
     saveStoredList('classboard_bookmarks_v1', bookmarks);
@@ -121,6 +135,8 @@ export default function App() {
         bookmarksCount={bookmarks.length}
         favoritesCount={favorites.length}
         onOpenMobileFilters={() => setMobileFiltersOpen(true)}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
 
@@ -310,6 +326,8 @@ export default function App() {
           onToggleFavorite={toggleFavorite}
           onSelectPaper={(p) => setActivePaper(p)}
           onClose={() => setActivePaper(null)}
+          theme={theme}
+          onToggleTheme={toggleTheme}
         />
       )}
     </div>

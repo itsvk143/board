@@ -27,7 +27,9 @@ import {
   ArrowRight,
   Menu,
   X,
-  Info
+  Info,
+  Sun,
+  Moon
 } from 'lucide-react';
 import LatexRenderer from './LatexRenderer';
 import { getRecommendedPapers } from '../data/papersStore';
@@ -40,6 +42,8 @@ export default function PaperViewerModal({
   onToggleFavorite,
   onSelectPaper,
   onClose,
+  theme,
+  onToggleTheme,
 }) {
   const [activeSectionId, setActiveSectionId] = useState('ALL');
   const [showAnswerKey, setShowAnswerKey] = useState(false);
@@ -246,6 +250,22 @@ export default function PaperViewerModal({
                 <Printer size={15} />
                 <span>Print PDF</span>
               </button>
+
+              {/* Theme Toggle Button */}
+              {onToggleTheme && (
+                <button
+                  className="action-icon-btn theme-toggle-btn"
+                  onClick={onToggleTheme}
+                  title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                  aria-label="Toggle theme"
+                >
+                  {theme === 'dark' ? (
+                    <Sun size={17} className="text-amber-400" />
+                  ) : (
+                    <Moon size={17} className="text-indigo-600" />
+                  )}
+                </button>
+              )}
 
               {/* More Menu Dropdown */}
               <div className="relative-more-menu" ref={moreMenuRef}>
@@ -455,6 +475,27 @@ export default function PaperViewerModal({
                         <span className="drawer-item-desc">Copy direct URL link to share with students</span>
                       </div>
                     </button>
+
+                    {onToggleTheme && (
+                      <button
+                        className="mobile-drawer-item"
+                        onClick={onToggleTheme}
+                      >
+                        <div className="drawer-item-icon-wrap">
+                          {theme === 'dark' ? (
+                            <Sun size={17} className="text-amber-400" />
+                          ) : (
+                            <Moon size={17} className="text-indigo-600" />
+                          )}
+                        </div>
+                        <div className="drawer-item-info">
+                          <span className="drawer-item-title">
+                            {theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                          </span>
+                          <span className="drawer-item-desc">Toggle color appearance</span>
+                        </div>
+                      </button>
+                    )}
 
                     {paper.officialLink && (
                       <a
