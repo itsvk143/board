@@ -4,6 +4,7 @@ import FilterSidebar from './components/FilterSidebar';
 import PaperCard from './components/PaperCard';
 import PaperViewerModal from './components/PaperViewerModal';
 import SubjectDirectory from './components/SubjectDirectory';
+import AdminAuditModal from './components/AdminAuditModal';
 import { ALL_PAPERS, SUBJECTS_BY_CLASS } from './data/papersData';
 import {
   filterPapers,
@@ -50,6 +51,7 @@ export default function App() {
   // Active Modals
   const [activePaper, setActivePaper] = useState(null);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [auditModalOpen, setAuditModalOpen] = useState(false);
 
   // Theme State (Dark / Light)
   const [theme, setTheme] = useState(() => {
@@ -137,6 +139,7 @@ export default function App() {
         onOpenMobileFilters={() => setMobileFiltersOpen(true)}
         theme={theme}
         onToggleTheme={toggleTheme}
+        onOpenAuditModal={() => setAuditModalOpen(true)}
       />
 
 
@@ -330,6 +333,12 @@ export default function App() {
           onToggleTheme={toggleTheme}
         />
       )}
+
+      {/* Admin Audit & Quality Assurance Modal */}
+      <AdminAuditModal
+        isOpen={auditModalOpen}
+        onClose={() => setAuditModalOpen(false)}
+      />
     </div>
   );
 }

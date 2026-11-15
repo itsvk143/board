@@ -50,6 +50,253 @@ export const TIERS = [
   { id: 'pyq', label: '10 Previous-Year Archives', badge: 'Official Archive / PYQ' },
 ];
 
+export const CHAPTERS_BY_CLASS_SUBJECT = {
+  '10': {
+    'mathematics': [
+      'Real Numbers',
+      'Polynomials',
+      'Pair of Linear Equations in Two Variables',
+      'Quadratic Equations',
+      'Arithmetic Progressions',
+      'Triangles',
+      'Coordinate Geometry',
+      'Introduction to Trigonometry',
+      'Some Applications of Trigonometry',
+      'Circles',
+      'Areas Related to Circles',
+      'Surface Areas and Volumes',
+      'Statistics',
+      'Probability'
+    ],
+    'science': [
+      'Chemical Reactions and Equations',
+      'Acids, Bases and Salts',
+      'Metals and Non-metals',
+      'Carbon and Its Compounds',
+      'Life Processes',
+      'Control and Coordination',
+      'How Do Organisms Reproduce?',
+      'Heredity and Evolution',
+      'Light - Reflection and Refraction',
+      'Human Eye and Colourful World',
+      'Electricity',
+      'Magnetic Effects of Electric Current',
+      'Our Environment'
+    ],
+    'social-science': [
+      'Rise of Nationalism in Europe',
+      'Nationalism in India',
+      'The Making of a Global World',
+      'The Age of Industrialisation',
+      'Print Culture and the Modern World',
+      'Resources and Development',
+      'Water Resources',
+      'Agriculture',
+      'Minerals and Energy Resources',
+      'Manufacturing Industries',
+      'Lifelines of National Economy',
+      'Power Sharing',
+      'Federalism',
+      'Gender, Religion and Caste',
+      'Political Parties',
+      'Outcomes of Democracy',
+      'Development',
+      'Sectors of the Indian Economy',
+      'Money and Credit',
+      'Globalisation and the Indian Economy'
+    ],
+    'english': [
+      'Reading Comprehension & Prose',
+      'First Flight: Prose & Poetry Analysis',
+      'Footprints Without Feet (Supplementary)',
+      'Analytical Paragraph Writing',
+      'Formal Letter & Grammar',
+      'Poetry Analysis & Literary Devices'
+    ],
+    'hindi': [
+      'क्षितिज: काव्य खंड (सूरदास के पद, तुलसीदास, जयशंकर प्रसाद)',
+      'क्षितिज: गद्य खंड (नेताजी का चश्मा, बालगोबिन भगत, लखनवी अंदाज़)',
+      'कृतिका: पूरक पाठ्यपुस्तक (माता का अँचल, साना-साना हाथ जोड़ि)',
+      'व्यावहारिक व्याकरण (रचना के आधार पर वाक्य भेद, वाच्य, पद-परिचय)',
+      'अलंकार व रस सिद्धांत (काव्य सौंदर्य एवं रस भेद)',
+      'रचनात्मक लेखन (अनुच्छेद लेखन, औपचारिक/अनौपचारिक पत्र, ई-मेल व विज्ञापन)'
+    ],
+    'computer-applications': [
+      'Networking Basics & Internet Protocols (HTTP, FTP, TCP/IP)',
+      'HTML5 Essentials & Web Designing (Tables, Forms, CSS)',
+      'Cyber Ethics, Open Source Software & Digital Footprints',
+      'Python Programming & Problem Solving (Loops, Conditionals, Lists)',
+      'Database Management System (DBMS) & SQL Queries',
+      'Office Automation Tools & Safe Computing Practices'
+    ],
+    'artificial-intelligence': [
+      'Introduction to AI & 3 Domains (Data, Computer Vision, NLP)',
+      'AI Project Cycle (Problem Scoping, Data Acquisition, Exploration)',
+      'Modelling & Machine Learning (Rule-based vs Learning-based)',
+      'Evaluation Metrics (Confusion Matrix, Accuracy, Precision, Recall, F1)',
+      'Computer Vision (Image Processing, Features & Pixel Grids)',
+      'Natural Language Processing (Text Normalization, Bag of Words, TF-IDF)',
+      'Ethics, Bias & Sustainable Development Goals (SDGs) in AI'
+    ],
+    'sanskrit': [
+      'शेमुषी (प्रथमो भागः/द्वितीयो भागः - पाठाधारित प्रश्नाः)',
+      'सन्धिकार्यम् (स्वरसन्धिः, व्यञ्जनसन्धिः, विसर्गसन्धिः)',
+      'समास-प्रकरणम् (तत्पुरुषः, कर्मधारयः, द्वन्द्वः, अव्ययीभावः)',
+      'प्रत्ययाः (क्त, क्तवतु, मतुप्, ठक्, त्व, तल्, टाप्)',
+      'शब्दरूपाणि व धातुरूपाणि (सर्वलकारेषु रूपाणि)',
+      'अपठित-अवबोधनम्, पत्रलेखनम् व चित्रवर्णनम्'
+    ]
+  },
+  '12': {
+    'mathematics': [
+      'Relations and Functions',
+      'Inverse Trigonometric Functions',
+      'Matrices',
+      'Determinants',
+      'Continuity and Differentiability',
+      'Applications of Derivatives',
+      'Integrals',
+      'Applications of Integrals',
+      'Differential Equations',
+      'Vector Algebra',
+      'Three-Dimensional Geometry',
+      'Linear Programming',
+      'Probability'
+    ],
+    'physics': [
+      'Electric Charges and Fields',
+      'Electrostatic Potential and Capacitance',
+      'Current Electricity',
+      'Moving Charges and Magnetism',
+      'Magnetism and Matter',
+      'Electromagnetic Induction',
+      'Alternating Current',
+      'Electromagnetic Waves',
+      'Ray Optics and Optical Instruments',
+      'Wave Optics',
+      'Dual Nature of Radiation and Matter',
+      'Atoms',
+      'Nuclei',
+      'Semiconductor Electronics'
+    ],
+    'chemistry': [
+      'Solutions',
+      'Electrochemistry',
+      'Chemical Kinetics',
+      'd- and f-Block Elements',
+      'Coordination Compounds',
+      'Haloalkanes and Haloarenes',
+      'Alcohols, Phenols and Ethers',
+      'Aldehydes, Ketones and Carboxylic Acids',
+      'Amines',
+      'Biomolecules'
+    ],
+    'biology': [
+      'Sexual Reproduction in Flowering Plants',
+      'Human Reproduction',
+      'Reproductive Health',
+      'Principles of Inheritance and Variation',
+      'Molecular Basis of Inheritance',
+      'Evolution',
+      'Human Health and Disease',
+      'Microbes in Human Welfare',
+      'Biotechnology: Principles and Processes',
+      'Biotechnology and its Applications',
+      'Organisms and Populations',
+      'Ecosystem',
+      'Biodiversity and Conservation'
+    ],
+    'computer-science': [
+      'Python Functions & File Handling',
+      'Data Structures (Stack Implementation)',
+      'Computer Networks & Protocols',
+      'Database Concepts & SQL Queries',
+      'Cyber Ethics & Society'
+    ],
+    'english': [
+      'Reading Comprehension & Advanced Prose',
+      'Flamingo: Prose & Poetry Analysis',
+      'Vistas: Supplementary Reader Studies',
+      'Notice, Invitations & Formal Responses',
+      'Official Letter Writing & Job Applications',
+      'Article & Analytical Report Composition'
+    ],
+    'economics': [
+      'National Income and Related Aggregates',
+      'Money and Banking (Credit Creation, Central Bank)',
+      'Determination of Income and Employment (AD-AS & Multiplier)',
+      'Government Budget and the Economy (Fiscal Deficits)',
+      'Balance of Payments and Foreign Exchange Rate',
+      'Indian Economic Development (1947-1990 & 1991 Reforms)',
+      'Current Challenges: Poverty, Human Capital & Rural Development',
+      'Sustainable Economic Development & Comparative Experience'
+    ],
+    'accountancy': [
+      'Accounting for Partnership Firms: Fundamentals & Goodwill',
+      'Reconstitution: Admission of a Partner',
+      'Reconstitution: Retirement and Death of a Partner',
+      'Dissolution of Partnership Firm',
+      'Accounting for Share Capital (Issue & Forfeiture)',
+      'Accounting for Debentures (Issue & Terms of Redemption)',
+      'Financial Statement Analysis & Accounting Ratios',
+      'Cash Flow Statement (AS-3 Revised)'
+    ],
+    'business-studies': [
+      'Nature and Significance of Management',
+      'Principles of Management (Fayol & Taylor)',
+      'Business Environment & Economic Policy Changes',
+      'Planning and Organizing (Types of Organization & Delegation)',
+      'Staffing (Recruitment, Selection & Training)',
+      'Directing (Supervision, Motivation, Leadership & Communication)',
+      'Controlling (Relationship with Planning)',
+      'Financial Management & Capital Structure Planning',
+      'Financial Markets (Money Market, Capital Market & SEBI)',
+      'Marketing Management & Consumer Protection Act 2019'
+    ],
+    'physical-education': [
+      'Management of Sporting Events (Fixtures, Knockout & League)',
+      'Children and Women in Sports (Special Considerations)',
+      'Yoga as Preventive Measure for Lifestyle Diseases',
+      'Physical Education & Sports for CWSN (Divyang)',
+      'Sports and Nutrition (Balanced Diet & Macronutrients)',
+      'Test and Measurement in Sports (SAI Khelo India Test)',
+      'Physiology, Injuries in Sports & Biomechanics'
+    ],
+    'political-science': [
+      'The End of Bipolarity & Disintegration of the Soviet Union',
+      'Contemporary Centres of Power (European Union, ASEAN, China)',
+      'Contemporary South Asia (Peace, Conflict & Democratization)',
+      'International Organizations (UN, Security Council Reform)',
+      'Security in the Contemporary World (Traditional & Non-Traditional)',
+      'Environment and Natural Resources & Global Commons',
+      'Challenges of Nation Building & Sardar Patel\'s Integration',
+      'Era of One-Party Dominance & Planned Economic Development',
+      'India\'s External Relations & Foreign Policy Doctrines',
+      'Democratic Resurgence & Recent Developments in Indian Politics'
+    ],
+    'history': [
+      'Theme 1: Bricks, Beads and Bones (The Harappan Civilisation)',
+      'Theme 2: Kings, Farmers and Towns (Early States and Economies)',
+      'Theme 3: Kinship, Caste and Class (Early Societies c. 600 BCE - 600 CE)',
+      'Theme 4: Thinkers, Beliefs and Buildings (Cultural Developments)',
+      'Theme 6: Bhakti-Sufi Traditions (Changes in Religious Beliefs)',
+      'Theme 7: An Imperial Capital: Vijayanagara',
+      'Theme 10: Colonialism and the Countryside (Official Archives)',
+      'Theme 11: Rebels and the Raj (1857 Revolt and its Representations)',
+      'Theme 13: Mahatma Gandhi and the Nationalist Movement',
+      'Theme 15: Framing the Constitution (The Beginning of a New Era)'
+    ]
+  }
+};
+
+export function getChaptersForSubject(classLevel, subjectId) {
+  const cKey = String(classLevel) === '12' ? '12' : '10';
+  if (CHAPTERS_BY_CLASS_SUBJECT[cKey]?.[subjectId]) {
+    return CHAPTERS_BY_CLASS_SUBJECT[cKey][subjectId];
+  }
+  return CHAPTERS_BY_SUBJECT[subjectId] || ['Core Syllabus Unit 1', 'Core Syllabus Unit 2', 'Core Syllabus Unit 3'];
+}
+
 export const CHAPTERS_BY_SUBJECT = {
   'mathematics': [
     'Real Numbers & Polynomials',
@@ -286,7 +533,7 @@ export function buildQuestionPaperCatalog() {
 
       subjects.forEach(subj => {
         const subjectId = subj.id;
-        const chapters = CHAPTERS_BY_SUBJECT[subjectId] || ['Core Syllabus Unit 1', 'Core Syllabus Unit 2', 'Core Syllabus Unit 3'];
+        const chapters = getChaptersForSubject(classLevel, subjectId);
         const blueprint = getBlueprint(board, classLevel, subjectId);
         const trendAnalysis = getSubjectTrendAnalysis(subjectId, classLevel, board);
 

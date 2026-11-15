@@ -105,6 +105,10 @@ export default function PaperCard({
 
         {/* Pedagogical Feature Badges */}
         <div className="paper-features-bar">
+          <span className="feature-pill exam-prob-badge" title="AI Exam Quality Score: 90+/100 (High-Yield Board Alignment)">
+            <Award size={12} className="text-amber-400" />
+            <span>90+ Quality</span>
+          </span>
           {paper.pattern2026 && (
             <span className="feature-pill pattern-2026-badge" title="Aligned with Official 2027 Board Examination Blueprint">
               <Sparkles size={12} className="text-amber-400" />

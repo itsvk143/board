@@ -11,7 +11,8 @@ import {
 } from 'lucide-react';
 import {
   SUBJECTS_BY_CLASS,
-  CHAPTERS_BY_SUBJECT
+  CHAPTERS_BY_SUBJECT,
+  getChaptersForSubject
 } from '../data/papersData';
 
 export default function SubjectDirectory({
@@ -83,7 +84,7 @@ export default function SubjectDirectory({
                 {subjects.map((subj) => {
                   const isSelected =
                     filters.classLevel === cls && filters.subjectId === subj.id;
-                  const chapters = CHAPTERS_BY_SUBJECT[subj.id] || [];
+                  const chapters = getChaptersForSubject(cls, subj.id);
 
                   return (
                     <div

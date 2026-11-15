@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   ArrowLeft,
   Printer,
@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 import LatexRenderer from './LatexRenderer';
 import { getRecommendedPapers } from '../data/papersStore';
+import { evaluateQuestionExamProbability, evaluatePaperQuality } from '../data/examProbabilityEngine';
 
 export default function PaperViewerModal({
   paper,
@@ -50,6 +51,8 @@ export default function PaperViewerModal({
   const [showMarkingScheme, setShowMarkingScheme] = useState(false);
   const [showSolutions, setShowSolutions] = useState(false);
   const [showTrendTable, setShowTrendTable] = useState(true);
+  const [showExamProbability, setShowExamProbability] = useState(true);
+  const [expandedProbabilities, setExpandedProbabilities] = useState({});
   const [isReadingMode, setIsReadingMode] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -64,17 +67,21 @@ export default function PaperViewerModal({
     }));
   };
 
+  const toggleProbabilityExpand = (qNumber) => {
+    setExpandedProbabilities(prev => ({
+      ...prev,
+      [qNumber]: !prev[qNumber]
+    }));
+  };
+
   useEffect(() => {
     setRevealedChapters({});
+    setExpandedProbabilities({});
   }, [paper?.id]);
 
   const scrollContainerRef = useRef(null);
   const moreMenuRef = useRef(null);
   const mobileMenuRef = useRef(null);
-
-  if (!paper) return null;
-
-  const recommendedPapers = getRecommendedPapers(paper, 3);
 
   // Keyboard shortcut listener (Esc for Mobile Menu, Reading Mode, or Exit)
   useEffect(() => {
@@ -108,6 +115,11 @@ export default function PaperViewerModal({
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMoreMenuOpen, isMobileMenuOpen]);
+
+  if (!paper) return null;
+
+  const paperQuality = useMemo(() => evaluatePaperQuality(paper), [paper]);
+  const recommendedPapers = getRecommendedPapers(paper, 3);
 
   // Track scroll position for active section & scroll-to-top button
   const handleScroll = (e) => {
@@ -197,6 +209,10 @@ export default function PaperViewerModal({
                 <span>{paper.subject}</span>
                 <span className="dot">•</span>
                 <span>{paper.academicSession || '2027'}</span>
+                <span className="dot">•</span>
+                <span className="toolbar-quality-pill" title={paperQuality.summary}>
+                  🎯 Exam Quality: {paperQuality.qualityScore}/100
+                </span>
                 {paper.pattern2026 && (
                   <>
                     <span className="dot">•</span>
@@ -211,6 +227,16 @@ export default function PaperViewerModal({
           <div className="toolbar-right-group">
             {/* Desktop Actions (Visible on screens > 960px) */}
             <div className="toolbar-desktop-actions">
+              {/* Exam Probability Toggle */}
+              <button
+                className={`action-pill-btn exam-prob-btn ${showExamProbability ? 'active' : ''}`}
+                onClick={() => setShowExamProbability(!showExamProbability)}
+                title="Toggle AI Exam Probability and 10-Year Trend Insights"
+              >
+                <Sparkles size={14} className="text-amber-400" />
+                <span>Exam Probability</span>
+              </button>
+
               {/* Reading Mode Toggle */}
               <button
                 className="action-pill-btn reading-mode-btn"
@@ -766,7 +792,11 @@ export default function PaperViewerModal({
                 </div>
 
                 <div className="doc-questions-flow">
-                  {section.questions.map(q => (
+                  {section.questions.map(q => {
+                    const qProb = evaluateQuestionExamProbability(q, paper);
+                    const isProbExpanded = Boolean(expandedProbabilities[q.qNumber]);
+
+                    return (
                     <article key={q.qNumber} className="doc-question-row">
                       <div className="doc-q-meta-line">
                         <div className="doc-q-left-group">
@@ -787,9 +817,109 @@ export default function PaperViewerModal({
                               {q.chapter}
                             </span>
                           )}
+                          {showExamProbability && (
+                            <button
+                              type="button"
+                              className={`doc-exam-prob-chip no-print ${qProb.priorityClassification.toLowerCase().replace(' ', '-')}`}
+                              onClick={() => toggleProbabilityExpand(q.qNumber)}
+                              title="Click to view AI 7-parameter evidence breakdown and historical board recurrence"
+                            >
+                              <Sparkles size={11} className="text-amber-400" />
+                              <span>{qProb.finalPriorityScore}% {qProb.priorityClassification} Probability</span>
+                              {isProbExpanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+                            </button>
+                          )}
                         </div>
                         <span className="doc-q-marks">[{q.marks} {q.marks === 1 ? 'Mark' : 'Marks'}]</span>
                       </div>
+
+                      {/* Expandable AI Exam Probability Evidence Drawer */}
+                      {showExamProbability && isProbExpanded && (
+                        <div className="doc-exam-prob-drawer no-print">
+                          <div className="prob-drawer-top">
+                            <div className="prob-drawer-title-group">
+                              <Sparkles size={14} className="text-amber-400" />
+                              <span className="prob-drawer-title">AI Examination Probability & PYQ Recurrence Analysis</span>
+                            </div>
+                            <span className="prob-drawer-score-pill">
+                              Weighted Score: {qProb.finalPriorityScore} / 100 • {qProb.priorityClassification} Priority
+                            </span>
+                          </div>
+
+                          <p className="prob-drawer-explanation">{qProb.aiAuditExplanation}</p>
+
+                          <div className="prob-metrics-bar-grid">
+                            <div className="prob-bar-cell">
+                              <div className="bar-cell-label">
+                                <span>PYQ Recurrence</span>
+                                <strong>{qProb.breakdown.pyqRecurrence}%</strong>
+                              </div>
+                              <div className="bar-track"><div className="bar-fill" style={{ width: `${qProb.breakdown.pyqRecurrence}%` }} /></div>
+                              <span className="bar-weight">Weight: 25%</span>
+                            </div>
+
+                            <div className="prob-bar-cell">
+                              <div className="bar-cell-label">
+                                <span>Syllabus Relevance</span>
+                                <strong>{qProb.breakdown.syllabusRelevance}%</strong>
+                              </div>
+                              <div className="bar-track"><div className="bar-fill" style={{ width: `${qProb.breakdown.syllabusRelevance}%` }} /></div>
+                              <span className="bar-weight">Weight: 20%</span>
+                            </div>
+
+                            <div className="prob-bar-cell">
+                              <div className="bar-cell-label">
+                                <span>Concept Importance</span>
+                                <strong>{qProb.breakdown.conceptImportance}%</strong>
+                              </div>
+                              <div className="bar-track"><div className="bar-fill" style={{ width: `${qProb.breakdown.conceptImportance}%` }} /></div>
+                              <span className="bar-weight">Weight: 15%</span>
+                            </div>
+
+                            <div className="prob-bar-cell">
+                              <div className="bar-cell-label">
+                                <span>Pattern Alignment</span>
+                                <strong>{qProb.breakdown.examPatternAlignment}%</strong>
+                              </div>
+                              <div className="bar-track"><div className="bar-fill" style={{ width: `${qProb.breakdown.examPatternAlignment}%` }} /></div>
+                              <span className="bar-weight">Weight: 15%</span>
+                            </div>
+
+                            <div className="prob-bar-cell">
+                              <div className="bar-cell-label">
+                                <span>NCERT Importance</span>
+                                <strong>{qProb.breakdown.textbookImportance}%</strong>
+                              </div>
+                              <div className="bar-track"><div className="bar-fill" style={{ width: `${qProb.breakdown.textbookImportance}%` }} /></div>
+                              <span className="bar-weight">Weight: 10%</span>
+                            </div>
+
+                            <div className="prob-bar-cell">
+                              <div className="bar-cell-label">
+                                <span>Competency Relevance</span>
+                                <strong>{qProb.breakdown.competencyRelevance}%</strong>
+                              </div>
+                              <div className="bar-track"><div className="bar-fill" style={{ width: `${qProb.breakdown.competencyRelevance}%` }} /></div>
+                              <span className="bar-weight">Weight: 10%</span>
+                            </div>
+                          </div>
+
+                          <div className="prob-drawer-meta-row">
+                            <div className="meta-row-item">
+                              <span className="meta-tag-label">10-Year Verified Recurrence:</span>
+                              <span className="meta-tag-val">{qProb.historicalEvidence.recurrenceYears.join(', ')} ({qProb.historicalEvidence.frequencySummary})</span>
+                            </div>
+                            <div className="meta-row-item">
+                              <span className="meta-tag-label">NCERT Anchor:</span>
+                              <span className="meta-tag-val">{qProb.historicalEvidence.ncertReference}</span>
+                            </div>
+                            <div className="meta-row-item">
+                              <span className="meta-tag-label">Recommended Action:</span>
+                              <span className="meta-tag-val action-keep">{qProb.recommendedAction}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
                       {/* Question Text with KaTeX */}
                       <div className="doc-q-body">
@@ -854,7 +984,8 @@ export default function PaperViewerModal({
                         </div>
                       )}
                     </article>
-                  ))}
+                    );
+                  })}
                 </div>
               </section>
             ))}

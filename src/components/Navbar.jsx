@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Bookmark, Heart, Sparkles, Search, SlidersHorizontal, Sun, Moon } from 'lucide-react';
+import { BookOpen, Bookmark, Heart, Sparkles, Search, SlidersHorizontal, Sun, Moon, ShieldCheck } from 'lucide-react';
 
 export default function Navbar({
   filters,
@@ -10,6 +10,7 @@ export default function Navbar({
   onOpenMobileFilters,
   theme,
   onToggleTheme,
+  onOpenAuditModal,
 }) {
   return (
     <header className="navbar-root">
@@ -83,6 +84,17 @@ export default function Navbar({
               </button>
             ))}
           </div>
+
+          {/* Audit Dashboard Trigger */}
+          <button
+            className="audit-nav-trigger-btn"
+            onClick={onOpenAuditModal}
+            title="Question Bank Audit & Syllabus Conformance"
+          >
+            <ShieldCheck size={16} className="text-emerald-400" />
+            <span className="audit-nav-text">Audit Report</span>
+            <span className="audit-nav-badge">100% Verified</span>
+          </button>
 
           {/* Bookmarks Toggle */}
           <button

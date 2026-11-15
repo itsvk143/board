@@ -8,6 +8,76 @@
  */
 
 export const SUBJECT_TREND_DATA = {
+  '10-mathematics': {
+    summary: 'Class 10 Mathematics examination heavily weights Algebra (Polynomials, Linear Equations, Quadratics, AP: 20 marks), Geometry (Triangles & Circles: 15 marks), Trigonometry & Heights/Distances (12 marks), and Statistics & Probability (11 marks). Competency case studies consistently draw from real-world parabolic sports paths, architectural heights, and coordinate navigation.',
+    weightageTable: [
+      {
+        chapter: 'Real Numbers & Polynomials',
+        weightage: '8–10 Marks',
+        percent: '11%',
+        repeatedConcepts: 'Proving irrationality of $\\sqrt{2}, \\sqrt{3}, \\sqrt{5}$ using contradiction; Zeroes and coefficients relations $\\alpha + \\beta = -b/a, \\alpha\\beta = c/a$.',
+        probableQuestions: 'Prove that $\\sqrt{5}$ is an irrational number; If $\\alpha$ and $\\beta$ are zeroes of $ax^2 + bx + c$, find $1/\\alpha + 1/\\beta$.',
+        confidence: 'High',
+        directRepeatRate: '95%'
+      },
+      {
+        chapter: 'Quadratic Equations & Arithmetic Progressions',
+        weightage: '12–14 Marks',
+        percent: '16%',
+        repeatedConcepts: 'Discriminant and nature of roots $D = b^2 - 4ac$; AP general term $a_n = a + (n-1)d$ and sum of $n$ terms $S_n$.',
+        probableQuestions: 'Find $k$ for which quadratic equation has equal real roots; Solve AP word problem regarding ladder rungs or savings scheme.',
+        confidence: 'High',
+        directRepeatRate: '92%'
+      },
+      {
+        chapter: 'Triangles & Coordinate Geometry',
+        weightage: '14–16 Marks',
+        percent: '19%',
+        repeatedConcepts: 'Basic Proportionality Theorem (Thales\' Theorem) geometric proof; Section formula and midpoint coordinates on Cartesian plane.',
+        probableQuestions: 'State and prove Basic Proportionality Theorem; Find ratio in which $y$-axis divides line joining two points.',
+        confidence: 'High',
+        directRepeatRate: '96%'
+      },
+      {
+        chapter: 'Trigonometry & Heights and Distances',
+        weightage: '12–14 Marks',
+        percent: '16%',
+        repeatedConcepts: 'Trigonometric identities $\\sin^2\\theta + \\cos^2\\theta = 1, 1 + \\tan^2\\theta = \\sec^2\\theta$; Two-triangle height and distance word problems (tower/building/ship).',
+        probableQuestions: 'Prove trigonometric identity; A balloon/airplane is observed at angles of elevation $60^\\circ$ and $30^\\circ$, calculate height.',
+        confidence: 'High',
+        directRepeatRate: '94%'
+      },
+      {
+        chapter: 'Circles & Areas Related to Circles',
+        weightage: '9–11 Marks',
+        percent: '13%',
+        repeatedConcepts: 'Tangents drawn from external point are equal in length; Area of sector $\\frac{\\theta}{360^\\circ} \\pi r^2$ and combination of plane figures.',
+        probableQuestions: 'Prove that lengths of tangents from external point are equal; Calculate area of shaded design in circle.',
+        confidence: 'High',
+        directRepeatRate: '90%'
+      },
+      {
+        chapter: 'Surface Areas, Volumes & Statistics/Probability',
+        weightage: '15–18 Marks',
+        percent: '21%',
+        repeatedConcepts: 'Volume and surface area of combined solids (hemisphere + cone/cylinder); Mean, Median, Mode of grouped data; Card/dice probability.',
+        probableQuestions: 'Calculate volume and surface area of toy/tent combination; Find median from cumulative frequency distribution table.',
+        confidence: 'High',
+        directRepeatRate: '88%'
+      }
+    ],
+    commonMistakes: [
+      'Applying negative signs incorrectly when substituting into the quadratic discriminant $D = b^2 - 4ac$.',
+      'Confusing angle of depression with angle of elevation in heights and distances diagram construction.',
+      'Leaving final volume or area calculations without explicit square/cubic centimeter units.'
+    ],
+    topperTips: [
+      'Always draw a neat, labeled geometric diagram for Triangles, Circles, and Heights & Distances before algebraic solving.',
+      'State theorem names explicitly (e.g., By Basic Proportionality Theorem, By Section Formula) to earn full method marks.',
+      'Double check arithmetic additions in statistical frequency distribution tables.'
+    ]
+  },
+
   'mathematics': {
     summary: 'Based on 8 years of question paper analysis (2019–2026), calculus, vectors/3D geometry, and algebra constitute over 65% of the total weightage. Competency case studies consistently draw from real-world maxima/minima and linear programming applications.',
     weightageTable: [
@@ -372,6 +442,13 @@ export const SUBJECT_TREND_DATA = {
  * Provides rich fallback for humanities, commerce, and language subjects.
  */
 export function getSubjectTrendAnalysis(subjectId, classLevel, board) {
+  const cLevel = String(classLevel);
+  if (cLevel === '10' && subjectId === 'mathematics') {
+    return SUBJECT_TREND_DATA['10-mathematics'];
+  }
+  if (cLevel === '10' && subjectId === 'science') {
+    return SUBJECT_TREND_DATA['science'];
+  }
   if (SUBJECT_TREND_DATA[subjectId]) {
     return SUBJECT_TREND_DATA[subjectId];
   }

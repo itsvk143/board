@@ -18,7 +18,8 @@ import {
   YEARS,
   DIFFICULTIES,
   TIERS,
-  CHAPTERS_BY_SUBJECT
+  CHAPTERS_BY_SUBJECT,
+  getChaptersForSubject
 } from '../data/papersData';
 
 export default function FilterSidebar({
@@ -36,9 +37,9 @@ export default function FilterSidebar({
         (v, i, a) => a.findIndex(t => t.id === v.id) === i
       );
 
-  // Available chapters based on chosen subject
+  // Available chapters based on chosen subject and class level
   const currentChapters = (filters.subjectId && filters.subjectId !== 'ALL')
-    ? (CHAPTERS_BY_SUBJECT[filters.subjectId] || [])
+    ? getChaptersForSubject(filters.classLevel, filters.subjectId)
     : [];
 
   const handleReset = () => {
