@@ -50,7 +50,8 @@ export default function PaperViewerModal({
   const [showAnswerKey, setShowAnswerKey] = useState(false);
   const [showMarkingScheme, setShowMarkingScheme] = useState(false);
   const [showSolutions, setShowSolutions] = useState(false);
-  const [showTrendTable, setShowTrendTable] = useState(true);
+  const [showTrendTable, setShowTrendTable] = useState(false);
+  const [showExaminerGuide, setShowExaminerGuide] = useState(false);
   const [showExamProbability, setShowExamProbability] = useState(true);
   const [expandedProbabilities, setExpandedProbabilities] = useState({});
   const [isReadingMode, setIsReadingMode] = useState(false);
@@ -670,12 +671,13 @@ export default function PaperViewerModal({
 
           {/* 8-Year Board Trend Analysis & High-Yield Blueprint (Prompt Requirement 10) */}
           {paper.trendAnalysis && (
-            <div className="doc-trend-analysis-card no-print">
+            <div className={`doc-trend-analysis-card no-print ${!showTrendTable ? 'is-collapsed' : ''}`}>
               <div 
                 className="trend-card-header" 
                 onClick={() => setShowTrendTable(!showTrendTable)}
                 role="button"
                 tabIndex={0}
+                title={showTrendTable ? "Click to collapse 8-Year Trend Analysis" : "Click to expand 8-Year Trend Analysis"}
               >
                 <div className="trend-header-left">
                   <div className="trend-icon-badge">
@@ -993,77 +995,92 @@ export default function PaperViewerModal({
 
           {/* Board Examiner's Report & Scoring Mastery Guide (Prompt Requirement 9) */}
           {paper.examinerInsights && (
-            <section className="doc-examiner-guide-section no-print">
-              <div className="examiner-guide-header">
-                <div className="examiner-icon-wrap">
-                  <Award size={22} className="text-indigo-400" />
-                </div>
-                <div>
-                  <div className="examiner-title-row">
-                    <h3 className="examiner-guide-title">Board Examiner's Feedback & Scoring Mastery Guide</h3>
-                    <span className="examiner-pill">Post-Paper Analysis</span>
+            <section className={`doc-examiner-guide-section no-print ${!showExaminerGuide ? 'is-collapsed' : ''}`}>
+              <div 
+                className="examiner-guide-header"
+                onClick={() => setShowExaminerGuide(!showExaminerGuide)}
+                role="button"
+                tabIndex={0}
+                title={showExaminerGuide ? "Click to collapse Examiner's Feedback & Scoring Mastery Guide" : "Click to expand Examiner's Feedback & Scoring Mastery Guide"}
+              >
+                <div className="examiner-header-left">
+                  <div className="examiner-icon-wrap">
+                    <Award size={22} className="text-indigo-400" />
                   </div>
-                  <p className="examiner-guide-sub">Official board evaluation criteria, common student traps, and topper scoring strategies.</p>
-                </div>
-              </div>
-
-              <div className="examiner-grid">
-                {/* Common Student Mistakes */}
-                <div className="examiner-col mistakes-col">
-                  <div className="col-heading">
-                    <AlertTriangle size={17} className="text-amber-400" />
-                    <span>⚠️ Common Student Mistakes & Traps (Examiner's Report)</span>
+                  <div>
+                    <div className="examiner-title-row">
+                      <h3 className="examiner-guide-title">Board Examiner's Feedback & Scoring Mastery Guide</h3>
+                      <span className="examiner-pill">Post-Paper Analysis</span>
+                    </div>
+                    <p className="examiner-guide-sub">Official board evaluation criteria, common student traps, and topper scoring strategies.</p>
                   </div>
-                  <ul className="examiner-points-list">
-                    {paper.examinerInsights.commonMistakes.map((mistake, mIdx) => (
-                      <li key={mIdx}>
-                        <span className="point-bullet bullet-mistake">•</span>
-                        <span>{mistake}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
-
-                {/* Tips to Score Full Marks */}
-                <div className="examiner-col tips-col">
-                  <div className="col-heading">
-                    <Lightbulb size={17} className="text-emerald-400" />
-                    <span>💡 Tips to Score Full Marks (Topper's Strategy)</span>
-                  </div>
-                  <ul className="examiner-points-list">
-                    {paper.examinerInsights.topperTips.map((tip, tIdx) => (
-                      <li key={tIdx}>
-                        <span className="point-bullet bullet-tip">✓</span>
-                        <span>{tip}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="examiner-action-bar">
-                <button
-                  className={`examiner-toggle-btn ${showSolutions ? 'active' : ''}`}
-                  onClick={() => setShowSolutions(!showSolutions)}
-                >
-                  <Eye size={15} />
-                  <span>{showSolutions ? 'Hide Step-by-Step Solutions' : 'Reveal Step-by-Step Marking Solutions'}</span>
-                </button>
-                <button
-                  className={`examiner-toggle-btn ${showAnswerKey ? 'active' : ''}`}
-                  onClick={() => setShowAnswerKey(!showAnswerKey)}
-                >
-                  <CheckCircle2 size={15} />
-                  <span>{showAnswerKey ? 'Hide Quick Answer Key' : 'Reveal Quick Reference Answer Key'}</span>
-                </button>
-                <button
-                  className={`examiner-toggle-btn ${showMarkingScheme ? 'active' : ''}`}
-                  onClick={() => setShowMarkingScheme(!showMarkingScheme)}
-                >
-                  <Award size={15} />
-                  <span>{showMarkingScheme ? 'Hide Marking Scheme' : 'Reveal Step Marking Rubrics'}</span>
+                <button className="examiner-chevron-btn" aria-label="Toggle examiner guide">
+                  {showExaminerGuide ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                 </button>
               </div>
+
+              {showExaminerGuide && (
+                <div className="examiner-guide-body">
+                  <div className="examiner-grid">
+                    {/* Common Student Mistakes */}
+                    <div className="examiner-col mistakes-col">
+                      <div className="col-heading">
+                        <AlertTriangle size={17} className="text-amber-400" />
+                        <span>⚠️ Common Student Mistakes & Traps (Examiner's Report)</span>
+                      </div>
+                      <ul className="examiner-points-list">
+                        {paper.examinerInsights.commonMistakes.map((mistake, mIdx) => (
+                          <li key={mIdx}>
+                            <span className="point-bullet bullet-mistake">•</span>
+                            <span>{mistake}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Tips to Score Full Marks */}
+                    <div className="examiner-col tips-col">
+                      <div className="col-heading">
+                        <Lightbulb size={17} className="text-emerald-400" />
+                        <span>💡 Tips to Score Full Marks (Topper's Strategy)</span>
+                      </div>
+                      <ul className="examiner-points-list">
+                        {paper.examinerInsights.topperTips.map((tip, tIdx) => (
+                          <li key={tIdx}>
+                            <span className="point-bullet bullet-tip">✓</span>
+                            <span>{tip}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="examiner-action-bar">
+                    <button
+                      className={`examiner-toggle-btn ${showSolutions ? 'active' : ''}`}
+                      onClick={() => setShowSolutions(!showSolutions)}
+                    >
+                      <Eye size={15} />
+                      <span>{showSolutions ? 'Hide Step-by-Step Solutions' : 'Reveal Step-by-Step Marking Solutions'}</span>
+                    </button>
+                    <button
+                      className={`examiner-toggle-btn ${showAnswerKey ? 'active' : ''}`}
+                      onClick={() => setShowAnswerKey(!showAnswerKey)}
+                    >
+                      <CheckCircle2 size={15} />
+                      <span>{showAnswerKey ? 'Hide Quick Answer Key' : 'Reveal Quick Reference Answer Key'}</span>
+                    </button>
+                    <button
+                      className={`examiner-toggle-btn ${showMarkingScheme ? 'active' : ''}`}
+                      onClick={() => setShowMarkingScheme(!showMarkingScheme)}
+                    >
+                      <Award size={15} />
+                      <span>{showMarkingScheme ? 'Hide Marking Scheme' : 'Reveal Step Marking Rubrics'}</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </section>
           )}
 

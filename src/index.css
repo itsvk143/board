@@ -4009,6 +4009,10 @@ button, input, select {
    BOARD EXAMINER'S REPORT & SCORING MASTERY GUIDE
    ========================================================================== */
 
+.doc-trend-analysis-card.is-collapsed .trend-card-header {
+  border-bottom: none;
+}
+
 .doc-examiner-guide-section {
   margin-top: 36px;
   margin-bottom: 24px;
@@ -4017,15 +4021,59 @@ button, input, select {
   border: 1px solid rgba(129, 140, 248, 0.35);
   border-radius: var(--radius-lg);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s ease;
+}
+
+.doc-examiner-guide-section.is-collapsed {
+  padding: 16px 20px;
+}
+
+.doc-examiner-guide-section.is-collapsed .examiner-guide-header {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .examiner-guide-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
   margin-bottom: 22px;
   padding-bottom: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.examiner-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.examiner-chevron-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  padding: 6px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.examiner-chevron-btn:hover {
+  background: rgba(99, 102, 241, 0.2);
+  color: #c7d2fe;
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.examiner-guide-body {
+  margin-top: 20px;
 }
 
 .examiner-icon-wrap {
@@ -4846,6 +4894,21 @@ button, input, select {
   background: #ffffff;
   border: 1px solid #cbd5e1;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .examiner-guide-header {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+[data-theme="light"] .examiner-chevron-btn {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+}
+
+[data-theme="light"] .examiner-chevron-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
 }
 
 [data-theme="light"] .examiner-guide-title {
