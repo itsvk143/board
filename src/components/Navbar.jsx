@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Bookmark, Heart, Sparkles, Search, SlidersHorizontal, Sun, Moon, ShieldCheck } from 'lucide-react';
+import { Bookmark, Heart, Sparkles, Search, SlidersHorizontal, Sun, Moon, ShieldCheck } from 'lucide-react';
 
 export default function Navbar({
   filters,
@@ -18,7 +18,7 @@ export default function Navbar({
         {/* Brand Logo */}
         <div className="navbar-brand-group">
           <div className="brand-logo-icon">
-            <BookOpen className="w-6 h-6 text-indigo-400" />
+            <img src="/logo.png" alt="LV Institute Board Logo" className="brand-logo-img" />
           </div>
           <div>
             <div className="brand-title">
