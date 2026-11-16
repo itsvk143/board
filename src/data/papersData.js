@@ -46,7 +46,7 @@ export const YEARS = ['2027', '2026', '2025', '2024', '2023', '2022', '2021', '2
 export const DIFFICULTIES = ['Easy', 'Medium', 'Hard'];
 export const TIERS = [
   { id: 'all', label: 'All 40 Papers' },
-  { id: 'practice', label: '20 Original Practice Papers', badge: 'Practice (AI-Authored)' },
+  { id: 'practice', label: '20 Original Practice Papers', badge: 'Practice Paper' },
   { id: 'model', label: '10 Model / Sample Papers', badge: 'Model / Blueprint' },
   { id: 'pyq', label: '10 Previous-Year Archives', badge: 'Official Archive / PYQ' },
 ];
@@ -555,7 +555,7 @@ export function buildQuestionPaperCatalog() {
             subjectId,
             tier: 'practice',
             tierTitle: `Original Practice Paper #${i}`,
-            badge: i <= 10 ? 'AI-Authored Practice' : 'Predicted High-Yield Set',
+            badge: null,
             academicSession: '2027',
             year: '2027',
             durationMinutes: blueprint.durationMinutes,
