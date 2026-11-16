@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bookmark, Heart, Sparkles, Search, SlidersHorizontal, Sun, Moon, ShieldCheck } from 'lucide-react';
+import { Bookmark, Heart, Sparkles, Search, SlidersHorizontal, Sun, Moon, ShieldCheck, Lock, LogOut } from 'lucide-react';
 
 export default function Navbar({
   filters,
@@ -11,7 +11,10 @@ export default function Navbar({
   theme,
   onToggleTheme,
   onOpenAuditModal,
+  onOpenAdminLogin,
+  onAdminLogout,
   isAdmin,
+  adminUser,
 }) {
   return (
     <header className="navbar-root">
@@ -86,16 +89,35 @@ export default function Navbar({
             ))}
           </div>
 
-          {/* Audit Dashboard Trigger - Strictly Admin Only (Hidden from Public) */}
-          {isAdmin && (
+          {/* Administrator Access - Toggle between Admin Login and Admin Controls */}
+          {isAdmin ? (
+            <div className="admin-nav-group">
+              <button
+                className="audit-nav-trigger-btn"
+                onClick={onOpenAuditModal}
+                title="Question Bank Audit & Syllabus Conformance (Admin Only)"
+              >
+                <ShieldCheck size={16} className="text-emerald-400" />
+                <span className="audit-nav-text">Audit Report</span>
+                <span className="audit-nav-badge">Admin</span>
+              </button>
+              <button
+                className="admin-logout-nav-btn"
+                onClick={onAdminLogout}
+                title="Exit Administrator Mode"
+              >
+                <LogOut size={13} />
+                <span>Exit Admin</span>
+              </button>
+            </div>
+          ) : (
             <button
-              className="audit-nav-trigger-btn"
-              onClick={onOpenAuditModal}
-              title="Question Bank Audit & Syllabus Conformance (Admin Only)"
+              className="admin-login-nav-btn"
+              onClick={onOpenAdminLogin}
+              title="Faculty & Directorate Portal"
             >
-              <ShieldCheck size={16} className="text-emerald-400" />
-              <span className="audit-nav-text">Audit Report</span>
-              <span className="audit-nav-badge">Admin</span>
+              <Lock size={13} className="text-indigo-400" />
+              <span>Admin Login</span>
             </button>
           )}
 

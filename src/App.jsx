@@ -5,6 +5,7 @@ import PaperCard from './components/PaperCard';
 import PaperViewerModal from './components/PaperViewerModal';
 import SubjectDirectory from './components/SubjectDirectory';
 import AdminAuditModal from './components/AdminAuditModal';
+import AdminLoginModal from './components/AdminLoginModal';
 import { ALL_PAPERS, SUBJECTS_BY_CLASS } from './data/papersData';
 import {
   filterPapers,
@@ -52,17 +53,53 @@ export default function App() {
   const [activePaper, setActivePaper] = useState(null);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [auditModalOpen, setAuditModalOpen] = useState(false);
+  const [adminLoginOpen, setAdminLoginOpen] = useState(false);
 
-  // Admin Mode (Audit Report is only visible to Admin)
+  // Admin Session State
+  const [adminUser, setAdminUser] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    const stored = localStorage.getItem('lv_board_admin_session') || sessionStorage.getItem('lv_board_admin_session');
+    if (stored) {
+      try { return JSON.parse(stored); } catch (e) { return null; }
+    }
+    return null;
+  });
+
+  // Admin Mode (Audit Report & QA Tools are strictly unlocked when Admin is authenticated)
   const [isAdmin, setIsAdmin] = useState(() => {
     if (typeof window === 'undefined') return false;
     const params = new URLSearchParams(window.location.search);
     return (
       params.get('admin') === 'true' ||
       params.get('role') === 'admin' ||
-      localStorage.getItem('lv_board_admin') === 'true'
+      localStorage.getItem('lv_board_admin') === 'true' ||
+      sessionStorage.getItem('lv_board_admin') === 'true' ||
+      Boolean(localStorage.getItem('lv_board_admin_session'))
     );
   });
+
+  const handleAdminLoginSuccess = (session, remember) => {
+    setAdminUser(session);
+    setIsAdmin(true);
+    if (remember) {
+      localStorage.setItem('lv_board_admin', 'true');
+      localStorage.setItem('lv_board_admin_session', JSON.stringify(session));
+    } else {
+      sessionStorage.setItem('lv_board_admin', 'true');
+      sessionStorage.setItem('lv_board_admin_session', JSON.stringify(session));
+    }
+    setAuditModalOpen(true);
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdmin(false);
+    setAdminUser(null);
+    localStorage.removeItem('lv_board_admin');
+    localStorage.removeItem('lv_board_admin_session');
+    sessionStorage.removeItem('lv_board_admin');
+    sessionStorage.removeItem('lv_board_admin_session');
+    setAuditModalOpen(false);
+  };
 
   // Admin keyboard shortcut listener: Ctrl + Shift + A or Cmd + Shift + A
   useEffect(() => {
@@ -72,14 +109,7 @@ export default function App() {
         if (isAdmin) {
           setAuditModalOpen(true);
         } else {
-          const pass = prompt('Enter Admin Passcode:');
-          if (pass === 'admin' || pass === 'lvadmin' || pass === 'admin2026' || pass === 'board@admin') {
-            setIsAdmin(true);
-            localStorage.setItem('lv_board_admin', 'true');
-            setAuditModalOpen(true);
-          } else if (pass !== null) {
-            alert('Incorrect admin passcode.');
-          }
+          setAdminLoginOpen(true);
         }
       }
     };
@@ -90,15 +120,11 @@ export default function App() {
   // Console helper commands for admin access
   useEffect(() => {
     window.enableAdmin = () => {
-      setIsAdmin(true);
-      localStorage.setItem('lv_board_admin', 'true');
-      setAuditModalOpen(true);
+      handleAdminLoginSuccess({ username: 'console-admin', role: 'Super Administrator', loginTime: new Date().toISOString() }, true);
       console.log('Admin mode enabled. Audit Report is now visible.');
     };
     window.disableAdmin = () => {
-      setIsAdmin(false);
-      localStorage.removeItem('lv_board_admin');
-      setAuditModalOpen(false);
+      handleAdminLogout();
       console.log('Admin mode disabled. Audit Report is hidden from public.');
     };
   }, []);
@@ -190,7 +216,10 @@ export default function App() {
         theme={theme}
         onToggleTheme={toggleTheme}
         onOpenAuditModal={() => setAuditModalOpen(true)}
+        onOpenAdminLogin={() => setAdminLoginOpen(true)}
+        onAdminLogout={handleAdminLogout}
         isAdmin={isAdmin}
+        adminUser={adminUser}
       />
 
 
@@ -385,6 +414,13 @@ export default function App() {
         />
       )}
 
+      {/* Admin Login Modal */}
+      <AdminLoginModal
+        isOpen={adminLoginOpen}
+        onClose={() => setAdminLoginOpen(false)}
+        onLoginSuccess={handleAdminLoginSuccess}
+      />
+
       {/* Admin Audit & Quality Assurance Modal - Visible Only to Admin */}
       {isAdmin && (
         <AdminAuditModal
@@ -398,7 +434,7 @@ export default function App() {
         <div className="admin-status-dock no-print">
           <div className="admin-status-text">
             <span className="admin-pulse-dot" />
-            <span>Admin Active (Audit Unlocked)</span>
+            <span>Admin Active ({adminUser?.username || 'Directorate'})</span>
           </div>
           <button
             className="btn-admin-dock-action"
@@ -408,11 +444,7 @@ export default function App() {
           </button>
           <button
             className="btn-admin-dock-logout"
-            onClick={() => {
-              setIsAdmin(false);
-              localStorage.removeItem('lv_board_admin');
-              setAuditModalOpen(false);
-            }}
+            onClick={handleAdminLogout}
             title="Exit Admin Mode"
           >
             Exit Admin
