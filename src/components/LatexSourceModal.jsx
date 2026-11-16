@@ -33,7 +33,7 @@ export default function LatexSourceModal({ paper, onClose }) {
           <div className="modal-title-group">
             <FileCode size={20} className="text-indigo-400" />
             <div>
-              <h3 className="modal-title">Raw LaTeX Source Document</h3>
+              <h3 className="modal-title">Raw Source Document</h3>
               <p className="modal-subtitle">{paper.title}</p>
             </div>
           </div>
@@ -43,7 +43,7 @@ export default function LatexSourceModal({ paper, onClose }) {
               onClick={handleCopy}
             >
               {copied ? <Check size={14} /> : <Copy size={14} />}
-              <span>{copied ? 'Copied LaTeX!' : 'Copy LaTeX'}</span>
+              <span>{copied ? 'Copied Source!' : 'Copy Source'}</span>
             </button>
             <button className="action-btn-pill" onClick={handleDownload}>
               <Download size={14} />

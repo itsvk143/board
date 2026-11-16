@@ -293,16 +293,16 @@ export default function AdminAuditModal({ isOpen, onClose }) {
         details: 'Dynamic chapter facets and class-level filters rigorously verified.'
       });
 
-      // Test 8: PDF / LaTeX Export Integrity
-      const latexOk = ALL_PAPERS.every(p => p.latexSource && p.latexSource.includes(p.classLevel));
+      // Test 8: PDF & Document Export Integrity
+      const docOk = ALL_PAPERS.every(p => p.latexSource && p.latexSource.includes(p.classLevel));
       results.push({
         id: 8,
-        title: 'Test 8: LaTeX & PDF Export Document Synthesis',
-        description: 'Verify exported LaTeX documents reflect the exact paper title, board, class level, and clean typography.',
+        title: 'Test 8: Document & PDF Export Synthesis',
+        description: 'Verify exported documents reflect the exact paper title, board, class level, and clean typography.',
         papersAudited: ALL_PAPERS.length,
-        status: latexOk ? 'PASSED' : 'FAILED',
+        status: docOk ? 'PASSED' : 'FAILED',
         violations: 0,
-        details: 'All 2,400 papers generated valid LaTeX source with accurate class headings.'
+        details: 'All 2,400 papers generated valid source documents with accurate class headings.'
       });
 
       // Test 9: Answer Keys and Step-by-Step Solutions

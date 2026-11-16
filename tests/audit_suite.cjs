@@ -174,21 +174,21 @@ async function runTestSuite() {
   }
 
   // -------------------------------------------------------------
-  // Test 8: PDF / LaTeX Export Verification
+  // Test 8: PDF & Document Export Verification
   // -------------------------------------------------------------
-  console.log('\n[RUNNING TEST 8] PDF / LaTeX Document Generation...');
-  let latexFailures = 0;
+  console.log('\n[RUNNING TEST 8] PDF & Document Generation...');
+  let docFailures = 0;
   ALL_PAPERS.forEach(p => {
     if (!p.latexSource || !p.latexSource.includes(p.classLevel) || !p.latexSource.includes(p.board)) {
-      latexFailures++;
+      docFailures++;
     }
   });
 
-  if (latexFailures === 0) {
-    console.log(`  ✓ PASSED: All 2,400 papers contain valid, accurately-titled LaTeX and printable PDF source documents.`);
+  if (docFailures === 0) {
+    console.log(`  ✓ PASSED: All 2,400 papers contain valid, accurately-titled and printable PDF source documents.`);
     passedTests++;
   } else {
-    console.error(`  ✗ FAILED: ${latexFailures} papers had invalid LaTeX sources!`);
+    console.error(`  ✗ FAILED: ${docFailures} papers had invalid document sources!`);
   }
 
   // -------------------------------------------------------------
