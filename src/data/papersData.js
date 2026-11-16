@@ -10,6 +10,7 @@
 import { getBlueprint } from './blueprint2026.js';
 import { generate2026AlignedSections } from './questionGenerator.js';
 import { getSubjectTrendAnalysis } from './trendAnalysis.js';
+import { auditPaperSyllabus } from './syllabusAuditor.js';
 
 export const BOARDS = ['CBSE', 'ICSE', 'IB'];
 export const CLASSES = ['10', '12'];
@@ -562,11 +563,7 @@ export function buildQuestionPaperCatalog() {
             difficulty,
             language: 'English',
             questionCount: blueprint.totalQuestions,
-            chaptersCovered: [
-              chapters[(i - 1) % chapters.length],
-              chapters[i % chapters.length],
-              chapters[(i + 1) % chapters.length]
-            ],
+            chaptersCovered: [],
             sections,
             trendAnalysis,
             examinerInsights: {
@@ -590,6 +587,7 @@ export function buildQuestionPaperCatalog() {
             pdfDownloadAllowed: true,
             recommendationScore: 90 + (i % 10)
           };
+          auditPaperSyllabus(paper);
           paper.latexSource = generateLatexDocument(paper);
           catalog.push(paper);
         }
@@ -619,7 +617,7 @@ export function buildQuestionPaperCatalog() {
             difficulty,
             language: 'English',
             questionCount: blueprint.totalQuestions,
-            chaptersCovered: chapters.slice(0, 4),
+            chaptersCovered: [],
             sections,
             trendAnalysis,
             examinerInsights: {
@@ -643,6 +641,7 @@ export function buildQuestionPaperCatalog() {
             pdfDownloadAllowed: true,
             recommendationScore: 85 + (i % 15)
           };
+          auditPaperSyllabus(paper);
           paper.latexSource = generateLatexDocument(paper);
           catalog.push(paper);
         }
@@ -679,7 +678,7 @@ export function buildQuestionPaperCatalog() {
             difficulty,
             language: 'English',
             questionCount: blueprint.totalQuestions,
-            chaptersCovered: chapters,
+            chaptersCovered: [],
             sections,
             trendAnalysis,
             examinerInsights: {
@@ -703,6 +702,7 @@ export function buildQuestionPaperCatalog() {
             pdfDownloadAllowed: false, // External licensed source
             recommendationScore: 80 + (i % 20)
           };
+          auditPaperSyllabus(paper);
           paper.latexSource = generateLatexDocument(paper);
           catalog.push(paper);
         }

@@ -799,7 +799,7 @@ export const CLASS_12_QUESTIONS = {
       {
         title: 'Case Study 2: Architecture Parabolic Arch Bridge',
         text: 'A civil infrastructure project designs a parabolic highway arch over a river. The span of the bridge is 40 meters, and the central height of the arch is 10 meters above the deck. Taking the origin $(0,0)$ at the vertex of the arch, the equation of the inverted parabola is $x^2 = -4ay$.',
-        chapter: 'Quadratic Equations & AP',
+        chapter: 'Applications of Integrals & Conic Modeling',
         subQuestions: [
           {
             subId: '(i)',

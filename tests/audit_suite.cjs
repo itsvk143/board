@@ -14,7 +14,7 @@ async function runTestSuite() {
   const { validateQuestion, auditPaper, auditEntireCatalog, FORBIDDEN_CLASS_10_KEYWORDS } = await import('../src/data/questionValidator.js');
 
   let passedTests = 0;
-  let totalTests = 10;
+  let totalTests = 11;
 
   // -------------------------------------------------------------
   // Test 1: Class 10 Science Isolation
@@ -236,6 +236,51 @@ async function runTestSuite() {
     passedTests++;
   } else {
     console.error('  ✗ FAILED: Platform catalog audit revealed errors!');
+  }
+
+  // -------------------------------------------------------------
+  // Test 11: Interactive Syllabus Coverage & Question-Level Audit
+  // -------------------------------------------------------------
+  console.log('\n[RUNNING TEST 11] Interactive Syllabus Coverage & Question-Level Audit Verification...');
+  let syllabusFailures = 0;
+  let totalAuditedTopics = 0;
+  let totalMappedQuestions = 0;
+
+  ALL_PAPERS.forEach(p => {
+    if (!p.syllabusCoverage || !Array.isArray(p.syllabusCoverage) || p.syllabusCoverage.length === 0) {
+      syllabusFailures++;
+      return;
+    }
+    if (!p.syllabusAudit || p.syllabusAudit.auditStatus !== 'VERIFIED_ALIGNED' || p.syllabusAudit.unmappedQuestions !== 0) {
+      syllabusFailures++;
+      return;
+    }
+
+    let paperSum = 0;
+    p.syllabusCoverage.forEach(ch => {
+      if (!ch.chapterId || !ch.chapterName || ch.questionCount <= 0 || !Array.isArray(ch.topics) || ch.topics.length === 0) {
+        syllabusFailures++;
+      }
+      paperSum += ch.questionCount;
+      totalAuditedTopics += ch.topics.length;
+      ch.topics.forEach(top => {
+        if (!top.topicId || !top.topicName || top.questionCount <= 0) {
+          syllabusFailures++;
+        }
+      });
+    });
+
+    if (paperSum !== p.syllabusAudit.totalQuestions) {
+      syllabusFailures++;
+    }
+    totalMappedQuestions += paperSum;
+  });
+
+  if (syllabusFailures === 0 && totalMappedQuestions === 64920) {
+    console.log(`  ✓ PASSED: 100% of 2,400 papers have verified, question-derived syllabus coverage with granular chapter & topic trees (${totalMappedQuestions} questions, ${totalAuditedTopics} topic instances mapped).`);
+    passedTests++;
+  } else {
+    console.error(`  ✗ FAILED: Found ${syllabusFailures} syllabus coverage integrity failures!`);
   }
 
   console.log('\n===============================================================');

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Clock,
   Award,
@@ -8,10 +8,13 @@ import {
   Heart,
   ExternalLink,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   ShieldCheck,
   CheckCircle,
   FileText,
-  Sparkles
+  Sparkles,
+  Layers
 } from 'lucide-react';
 
 export default function PaperCard({
@@ -23,6 +26,7 @@ export default function PaperCard({
   onOpenPaper,
 }) {
   const isPYQ = paper.tier === 'pyq';
+  const [isSyllabusExpanded, setIsSyllabusExpanded] = useState(false);
 
   return (
     <div className={`paper-card ${isPYQ ? 'is-pyq' : ''}`}>
@@ -86,21 +90,73 @@ export default function PaperCard({
           </div>
         </div>
 
-        {/* Chapters Covered Pills */}
-        <div className="chapters-container">
-          <div className="chapters-label">Syllabus Coverage:</div>
-          <div className="chapters-tag-wrap">
-            {paper.chaptersCovered.slice(0, 3).map((ch, idx) => (
-              <span key={idx} className="chapter-pill">
-                {ch}
-              </span>
-            ))}
-            {paper.chaptersCovered.length > 3 && (
-              <span className="chapter-pill-more">
-                +{paper.chaptersCovered.length - 3} more
+        {/* Interactive Syllabus Coverage (Prompt Requirement: Clickable button, hidden by default) */}
+        <div 
+          className={`card-syllabus-container ${isSyllabusExpanded ? 'is-expanded' : ''}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="syllabus-header-row">
+            <span className="syllabus-section-label">SYLLABUS COVERAGE</span>
+            {paper.syllabusAudit && (
+              <span className="syllabus-coverage-badge">
+                {paper.syllabusCoverage?.length || 0} Chapters • {paper.syllabusAudit?.uniqueTopicsCount || 0} Topics
               </span>
             )}
           </div>
+
+          <button
+            type="button"
+            className={`btn-syllabus-toggle ${isSyllabusExpanded ? 'active' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsSyllabusExpanded(!isSyllabusExpanded);
+            }}
+            aria-expanded={isSyllabusExpanded}
+            title={isSyllabusExpanded ? 'Collapse syllabus coverage details' : 'Expand full chapter and topic breakdown'}
+          >
+            <span>{isSyllabusExpanded ? 'Hide Syllabus Details' : 'View Syllabus Details'}</span>
+            {isSyllabusExpanded ? (
+              <ChevronUp size={15} className="syllabus-toggle-icon" />
+            ) : (
+              <ChevronDown size={15} className="syllabus-toggle-icon" />
+            )}
+          </button>
+
+          {/* Expanded Inline Syllabus Breakdown */}
+          {isSyllabusExpanded && (
+            <div className="syllabus-inline-drawer" onClick={(e) => e.stopPropagation()}>
+              <div className="drawer-subhead">
+                <span className="drawer-title-strong">Chapters Covered</span>
+                <span className="drawer-q-total">{paper.syllabusAudit?.mappedQuestions || paper.questionCount} Questions Mapped</span>
+              </div>
+
+              <div className="drawer-chapters-scroll">
+                {(paper.syllabusCoverage || []).map((ch, idx) => (
+                  <div key={ch.chapterId || idx} className="drawer-chapter-card">
+                    <div className="drawer-ch-title-row">
+                      <span className="ch-num">{idx + 1}.</span>
+                      <strong className="ch-name">{ch.chapterName}</strong>
+                      <span className="ch-qcount-pill">{ch.questionCount} Q{ch.questionCount > 1 ? 's' : ''}</span>
+                    </div>
+
+                    {ch.topics && ch.topics.length > 0 && (
+                      <ul className="drawer-topics-list">
+                        {ch.topics.map((top, tIdx) => (
+                          <li key={top.topicId || tIdx} className="drawer-topic-item">
+                            <span className="topic-dot">•</span>
+                            <span className="topic-text">{top.topicName}</span>
+                            {top.questionCount > 1 && (
+                              <span className="topic-badge">({top.questionCount})</span>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Pedagogical Feature Badges */}
