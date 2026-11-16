@@ -53,6 +53,56 @@ export default function App() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [auditModalOpen, setAuditModalOpen] = useState(false);
 
+  // Admin Mode (Audit Report is only visible to Admin)
+  const [isAdmin, setIsAdmin] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const params = new URLSearchParams(window.location.search);
+    return (
+      params.get('admin') === 'true' ||
+      params.get('role') === 'admin' ||
+      localStorage.getItem('lv_board_admin') === 'true'
+    );
+  });
+
+  // Admin keyboard shortcut listener: Ctrl + Shift + A or Cmd + Shift + A
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        if (isAdmin) {
+          setAuditModalOpen(true);
+        } else {
+          const pass = prompt('Enter Admin Passcode:');
+          if (pass === 'admin' || pass === 'lvadmin' || pass === 'admin2026' || pass === 'board@admin') {
+            setIsAdmin(true);
+            localStorage.setItem('lv_board_admin', 'true');
+            setAuditModalOpen(true);
+          } else if (pass !== null) {
+            alert('Incorrect admin passcode.');
+          }
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAdmin]);
+
+  // Console helper commands for admin access
+  useEffect(() => {
+    window.enableAdmin = () => {
+      setIsAdmin(true);
+      localStorage.setItem('lv_board_admin', 'true');
+      setAuditModalOpen(true);
+      console.log('Admin mode enabled. Audit Report is now visible.');
+    };
+    window.disableAdmin = () => {
+      setIsAdmin(false);
+      localStorage.removeItem('lv_board_admin');
+      setAuditModalOpen(false);
+      console.log('Admin mode disabled. Audit Report is hidden from public.');
+    };
+  }, []);
+
   // Theme State (Dark / Light)
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('board_theme') || 'dark';
@@ -140,6 +190,7 @@ export default function App() {
         theme={theme}
         onToggleTheme={toggleTheme}
         onOpenAuditModal={() => setAuditModalOpen(true)}
+        isAdmin={isAdmin}
       />
 
 
@@ -334,11 +385,40 @@ export default function App() {
         />
       )}
 
-      {/* Admin Audit & Quality Assurance Modal */}
-      <AdminAuditModal
-        isOpen={auditModalOpen}
-        onClose={() => setAuditModalOpen(false)}
-      />
+      {/* Admin Audit & Quality Assurance Modal - Visible Only to Admin */}
+      {isAdmin && (
+        <AdminAuditModal
+          isOpen={auditModalOpen}
+          onClose={() => setAuditModalOpen(false)}
+        />
+      )}
+
+      {/* Admin Mode Floating Status Pill (Only Visible when Admin Mode is Enabled) */}
+      {isAdmin && (
+        <div className="admin-status-dock no-print">
+          <div className="admin-status-text">
+            <span className="admin-pulse-dot" />
+            <span>Admin Active (Audit Unlocked)</span>
+          </div>
+          <button
+            className="btn-admin-dock-action"
+            onClick={() => setAuditModalOpen(true)}
+          >
+            Audit Report
+          </button>
+          <button
+            className="btn-admin-dock-logout"
+            onClick={() => {
+              setIsAdmin(false);
+              localStorage.removeItem('lv_board_admin');
+              setAuditModalOpen(false);
+            }}
+            title="Exit Admin Mode"
+          >
+            Exit Admin
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -61,7 +61,7 @@ export default function SubjectDirectory({
             Browse <span className="brand-highlight">Class {currentClass}th</span> Subjects
           </h2>
           <p className="subject-dir-subtitle">
-            Explore <strong>40 complete question papers per subject</strong> for {filters.board} Class {currentClass}th (20 Original Practice Papers, 10 Blueprint Model Sets, and 10 Archival PYQ Sessions) with live LaTeX equations & step-by-step solutions.
+            Explore <strong>40 complete question papers per subject</strong> for {filters.board} Class {currentClass}th (20 Original Practice Papers, 10 Blueprint Model Sets, and 10 Archival PYQ Sessions).
           </p>
         </div>
 

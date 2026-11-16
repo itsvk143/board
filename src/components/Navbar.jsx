@@ -11,6 +11,7 @@ export default function Navbar({
   theme,
   onToggleTheme,
   onOpenAuditModal,
+  isAdmin,
 }) {
   return (
     <header className="navbar-root">
@@ -37,7 +38,7 @@ export default function Navbar({
           <input
             type="text"
             className="navbar-search-input"
-            placeholder="Search papers, chapters, LaTeX topics (e.g. Calculus, Optics, 2025)..."
+            placeholder="Search papers, chapters, topics (e.g. Calculus, Optics, 2025)..."
             value={filters.searchQuery || ''}
             onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
           />
@@ -85,16 +86,18 @@ export default function Navbar({
             ))}
           </div>
 
-          {/* Audit Dashboard Trigger */}
-          <button
-            className="audit-nav-trigger-btn"
-            onClick={onOpenAuditModal}
-            title="Question Bank Audit & Syllabus Conformance"
-          >
-            <ShieldCheck size={16} className="text-emerald-400" />
-            <span className="audit-nav-text">Audit Report</span>
-            <span className="audit-nav-badge">100% Verified</span>
-          </button>
+          {/* Audit Dashboard Trigger - Strictly Admin Only (Hidden from Public) */}
+          {isAdmin && (
+            <button
+              className="audit-nav-trigger-btn"
+              onClick={onOpenAuditModal}
+              title="Question Bank Audit & Syllabus Conformance (Admin Only)"
+            >
+              <ShieldCheck size={16} className="text-emerald-400" />
+              <span className="audit-nav-text">Audit Report</span>
+              <span className="audit-nav-badge">Admin</span>
+            </button>
+          )}
 
           {/* Bookmarks Toggle */}
           <button

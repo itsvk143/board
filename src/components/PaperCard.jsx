@@ -115,9 +115,9 @@ export default function PaperCard({
               <span>2027 Pattern</span>
             </span>
           )}
-          <span className="feature-pill" title="KaTeX Formulas live rendered">
+          <span className="feature-pill" title="Math and science formulas rendered">
             <CheckCircle size={12} className="text-emerald-400" />
-            <span>Live LaTeX</span>
+            <span>Formulas Formatted</span>
           </span>
           <span className="feature-pill" title="Detailed Step-by-Step Marking Scheme">
             <CheckCircle size={12} className="text-indigo-400" />
