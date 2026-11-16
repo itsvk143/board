@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
-  const [username, setUsername] = useState('admin');
+  const [username, setUsername] = useState('itsvikash143@gmail.com');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -23,55 +23,59 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
 
   if (!isOpen) return null;
 
-  const validPasswords = ['admin', 'admin123', 'admin2026', 'lvadmin', 'board@admin'];
+  const validUsernames = ['itsvikash143@gmail.com', 'itsvikash143', 'admin', 'admin@lvboard.edu'];
+  const validPasswords = ['LvBoard@@2026', 'lvboard@@2026', 'admin2026', 'admin'];
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
 
-    if (!username.trim()) {
-      setError('Please enter your administrator username or email.');
+    const trimmedUser = username.trim().toLowerCase();
+    const trimmedPass = password.trim();
+
+    if (!trimmedUser) {
+      setError('Please enter your administrator email (itsvikash143@gmail.com).');
       return;
     }
 
-    if (!password) {
-      setError('Please enter your administrator password.');
+    if (!trimmedPass) {
+      setError('Please enter your administrator passcode.');
       return;
     }
 
     setIsLoading(true);
 
     setTimeout(() => {
-      const isPassValid = validPasswords.includes(password.trim().toLowerCase());
-      const isUserValid = username.trim().toLowerCase().length >= 3;
+      const isPassValid = trimmedPass === 'LvBoard@@2026' || validPasswords.includes(trimmedPass.toLowerCase());
+      const isUserValid = validUsernames.includes(trimmedUser) || trimmedUser.length >= 3;
 
       if (isUserValid && isPassValid) {
         setIsLoading(false);
         const adminSession = {
-          username: username.trim(),
-          role: 'Super Administrator',
+          username: trimmedUser === 'itsvikash143@gmail.com' ? 'itsvikash143@gmail.com' : username.trim(),
+          role: 'Chief Administrator & Directorate',
           loginTime: new Date().toISOString()
         };
         onLoginSuccess(adminSession, rememberMe);
         onClose();
       } else {
         setIsLoading(false);
-        setError('Invalid administrator credentials. (Hint: Try username "admin" and password "admin2026")');
+        setError('Invalid administrator credentials. (Hint: Try username "itsvikash143@gmail.com" and password "LvBoard@@2026")');
       }
     }, 400);
   };
 
   const handleQuickDemo = () => {
-    setUsername('admin@lvboard.edu');
-    setPassword('admin2026');
+    setUsername('itsvikash143@gmail.com');
+    setPassword('LvBoard@@2026');
     setError('');
     setIsLoading(true);
 
     setTimeout(() => {
       setIsLoading(false);
       const adminSession = {
-        username: 'admin@lvboard.edu',
-        role: 'Director of Academics & QA',
+        username: 'itsvikash143@gmail.com',
+        role: 'Chief Administrator & Directorate',
         loginTime: new Date().toISOString()
       };
       onLoginSuccess(adminSession, true);
@@ -115,7 +119,7 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
                 <input
                   id="admin-username"
                   type="text"
-                  placeholder="e.g. admin or director@lvboard.edu"
+                  placeholder="e.g. itsvikash143@gmail.com"
                   value={username}
                   onChange={(e) => {
                     setUsername(e.target.value);
@@ -133,7 +137,7 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
                 <input
                   id="admin-password"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Enter administrator password..."
+                  placeholder="Enter administrator passcode (LvBoard@@2026)..."
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
@@ -160,7 +164,7 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
                 />
                 <span>Remember Administrator Session</span>
               </label>
-              <span className="passcode-hint-tag">Default: admin2026</span>
+              <span className="passcode-hint-tag">Default: LvBoard@@2026</span>
             </div>
 
             <button type="submit" className="btn-admin-submit" disabled={isLoading}>
@@ -188,7 +192,7 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
               disabled={isLoading}
             >
               <CheckCircle2 size={14} className="text-emerald-400" />
-              <span>One-Click Directorate Sign In</span>
+              <span>One-Click Sign In (itsvikash143@gmail.com)</span>
             </button>
           </div>
 
