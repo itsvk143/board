@@ -8,13 +8,11 @@ import {
   EyeOff,
   User,
   X,
-  Sparkles,
-  ArrowRight,
-  CheckCircle2
+  ArrowRight
 } from 'lucide-react';
 
 export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
-  const [username, setUsername] = useState('itsvikash143@gmail.com');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -24,7 +22,7 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
   if (!isOpen) return null;
 
   const validUsernames = ['itsvikash143@gmail.com', 'itsvikash143', 'admin', 'admin@lvboard.edu'];
-  const validPasswords = ['LvBoard@@2026', 'lvboard@@2026', 'admin2026', 'admin'];
+  const validPasswords = ['LvBoard@@2026', 'lvboard@@2026'];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +32,7 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
     const trimmedPass = password.trim();
 
     if (!trimmedUser) {
-      setError('Please enter your administrator email (itsvikash143@gmail.com).');
+      setError('Please enter your administrator username or email.');
       return;
     }
 
@@ -47,7 +45,7 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
 
     setTimeout(() => {
       const isPassValid = trimmedPass === 'LvBoard@@2026' || validPasswords.includes(trimmedPass.toLowerCase());
-      const isUserValid = validUsernames.includes(trimmedUser) || trimmedUser.length >= 3;
+      const isUserValid = validUsernames.includes(trimmedUser);
 
       if (isUserValid && isPassValid) {
         setIsLoading(false);
@@ -60,27 +58,9 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
         onClose();
       } else {
         setIsLoading(false);
-        setError('Invalid administrator credentials. (Hint: Try username "itsvikash143@gmail.com" and password "LvBoard@@2026")');
+        setError('Invalid administrator credentials. Access denied.');
       }
     }, 400);
-  };
-
-  const handleQuickDemo = () => {
-    setUsername('itsvikash143@gmail.com');
-    setPassword('LvBoard@@2026');
-    setError('');
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-      const adminSession = {
-        username: 'itsvikash143@gmail.com',
-        role: 'Chief Administrator & Directorate',
-        loginTime: new Date().toISOString()
-      };
-      onLoginSuccess(adminSession, true);
-      onClose();
-    }, 300);
   };
 
   return (
@@ -119,7 +99,7 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
                 <input
                   id="admin-username"
                   type="text"
-                  placeholder="e.g. itsvikash143@gmail.com"
+                  placeholder="Enter administrator email or ID..."
                   value={username}
                   onChange={(e) => {
                     setUsername(e.target.value);
@@ -137,7 +117,7 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
                 <input
                   id="admin-password"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Enter administrator passcode (LvBoard@@2026)..."
+                  placeholder="Enter administrator passcode..."
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
@@ -164,7 +144,6 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
                 />
                 <span>Remember Administrator Session</span>
               </label>
-              <span className="passcode-hint-tag">Default: LvBoard@@2026</span>
             </div>
 
             <button type="submit" className="btn-admin-submit" disabled={isLoading}>
@@ -178,23 +157,6 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
               )}
             </button>
           </form>
-
-          {/* Quick Demo Login Option */}
-          <div className="admin-demo-box">
-            <div className="demo-box-text">
-              <Sparkles size={14} className="text-amber-400" />
-              <span>Instant Access for Evaluators & Directorate:</span>
-            </div>
-            <button
-              type="button"
-              className="btn-demo-login"
-              onClick={handleQuickDemo}
-              disabled={isLoading}
-            >
-              <CheckCircle2 size={14} className="text-emerald-400" />
-              <span>One-Click Sign In (itsvikash143@gmail.com)</span>
-            </button>
-          </div>
 
           {/* Privileges Overview */}
           <div className="admin-privileges-box">
