@@ -10,9 +10,7 @@ import {
   Check
 } from 'lucide-react';
 import {
-  SUBJECTS_BY_CLASS,
-  CHAPTERS_BY_SUBJECT,
-  getChaptersForSubject
+  SUBJECTS_BY_CLASS
 } from '../data/papersData';
 
 export default function SubjectDirectory({
@@ -84,7 +82,6 @@ export default function SubjectDirectory({
                 {subjects.map((subj) => {
                   const isSelected =
                     filters.classLevel === cls && filters.subjectId === subj.id;
-                  const chapters = getChaptersForSubject(cls, subj.id);
 
                   return (
                     <div
@@ -119,21 +116,6 @@ export default function SubjectDirectory({
                           <span className="tier-pill-mini practice">20 Practice</span>
                           <span className="tier-pill-mini model">10 Model</span>
                           <span className="tier-pill-mini pyq">10 PYQs</span>
-                        </div>
-
-                        {/* Chapters Preview */}
-                        <div className="subj-chapters-preview">
-                          <span className="ch-label">Key Topics:</span>
-                          <div className="ch-pills-row">
-                            {chapters.slice(0, 3).map((ch, idx) => (
-                              <span key={idx} className="ch-pill-item">
-                                {ch}
-                              </span>
-                            ))}
-                            {chapters.length > 3 && (
-                              <span className="ch-more">+{chapters.length - 3} more</span>
-                            )}
-                          </div>
                         </div>
                       </div>
 
