@@ -33,7 +33,7 @@ export default function PaperCard({
       {/* Top Banner with Tier & Board */}
       <div className="card-top-row">
         <div className="card-tier-badge-group">
-          {paper.badge && paper.badge !== 'AI-Authored Practice' && paper.badge !== 'Predicted High-Yield Set' && (
+          {paper.badge && !['AI-Authored Practice', 'Predicted High-Yield Set', 'Curriculum Model Set', 'Archival PYQ (Verified Metadata)'].includes(paper.badge) && !paper.badge.includes('Archival PYQ') && (
             <span className={`tier-badge tier-${paper.tier}`}>
               {paper.badge}
             </span>
