@@ -2,19 +2,14 @@ import React, { useState } from 'react';
 import {
   Clock,
   Award,
-  BookOpen,
-  Printer,
+  FileText,
   Bookmark,
   Heart,
-  ExternalLink,
-  ChevronRight,
   ChevronDown,
   ChevronUp,
+  ArrowRight,
   ShieldCheck,
-  CheckCircle,
-  FileText,
-  Sparkles,
-  Layers
+  CheckCircle2,
 } from 'lucide-react';
 
 export default function PaperCard({
@@ -24,81 +19,102 @@ export default function PaperCard({
   onToggleBookmark,
   onToggleFavorite,
   onOpenPaper,
+  isCompact = false,
 }) {
   const isPYQ = paper.tier === 'pyq';
   const [isSyllabusExpanded, setIsSyllabusExpanded] = useState(false);
 
+  // Restrained category badge for distinction (Practice, Model, PYQ)
+  const getCategoryLabel = () => {
+    if (paper.tier === 'pyq') return 'Previous Year Paper';
+    if (paper.tier === 'model') return 'Model Paper';
+    return 'Practice Paper';
+  };
+
+  const questionTotal = paper.questionCount || (paper.sections || []).reduce((acc, s) => acc + (s.questions || []).length, 0);
+
   return (
-    <div className={`paper-card ${isPYQ ? 'is-pyq' : ''}`}>
-      {/* Top Banner with Tier & Board */}
+    <div className={`paper-card ${isPYQ ? 'is-pyq' : ''} ${isCompact ? 'is-compact' : ''}`}>
+      {/* TOP: Board & Class, Paper Category, Bookmark & Favorite */}
       <div className="card-top-row">
-        <div className="card-tier-badge-group">
-          {paper.badge && !['AI-Authored Practice', 'Predicted High-Yield Set', 'Curriculum Model Set', 'Archival PYQ (Verified Metadata)'].includes(paper.badge) && !paper.badge.includes('Archival PYQ') && (
-            <span className={`tier-badge tier-${paper.tier}`}>
-              {paper.badge}
-            </span>
-          )}
+        <div className="card-badges-left">
           <span className="board-class-tag">
-            {paper.board} • Class {paper.classLevel}
+            {paper.board} • Class {paper.classLevel}th
+          </span>
+          <span className={`paper-category-pill cat-${paper.tier}`}>
+            {getCategoryLabel()}
           </span>
         </div>
 
-        {/* Favorite & Bookmark Buttons */}
         <div className="card-quick-actions">
           <button
+            type="button"
             className={`card-icon-btn ${isFavorite ? 'active' : ''}`}
             onClick={(e) => {
               e.stopPropagation();
               onToggleFavorite(paper.id);
             }}
             title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            aria-label="Add to favorites"
           >
-            <Heart size={16} className={isFavorite ? 'fill-rose-500 text-rose-500' : ''} />
+            <Heart size={15} className={isFavorite ? 'fill-rose-500 text-rose-500' : ''} />
           </button>
           <button
+            type="button"
             className={`card-icon-btn ${isBookmarked ? 'active' : ''}`}
             onClick={(e) => {
               e.stopPropagation();
               onToggleBookmark(paper.id);
             }}
             title={isBookmarked ? 'Remove bookmark' : 'Bookmark paper'}
+            aria-label="Bookmark paper"
           >
-            <Bookmark size={16} className={isBookmarked ? 'fill-indigo-400 text-indigo-400' : ''} />
+            <Bookmark size={15} className={isBookmarked ? 'fill-indigo-400 text-indigo-400' : ''} />
           </button>
         </div>
       </div>
 
-      {/* Main Title & Subject */}
+      {/* MIDDLE: Subject, Session/Year, Difficulty, Title */}
       <div className="card-body-content" onClick={() => onOpenPaper(paper)}>
-        <div className="card-subject-line">
-          <span className="card-subject-name">{paper.subject}</span>
-          <span className="card-year-tag">Session {paper.year}</span>
+        <div className="card-middle-meta">
+          <span className="card-subject-tag">{paper.subject}</span>
+          <div className="card-middle-right">
+            <span className="card-session-pill">Session {paper.archiveYear || paper.year}</span>
+            <span className={`diff-pill diff-${paper.difficulty.toLowerCase()}`}>
+              {paper.difficulty}
+            </span>
+          </div>
         </div>
 
-        <h3 className="paper-card-title">{paper.title}</h3>
+        <h3 className="paper-card-title" title={paper.title}>
+          {paper.title}
+        </h3>
 
-        {/* Stats Row (Duration, Marks, Difficulty) */}
-        <div className="card-stats-row">
-          <div className="stat-item" title="Exam Duration">
-            <Clock size={14} className="stat-icon" />
+        {/* EXAMINATION INFORMATION: Duration, Maximum Marks, Number of Questions */}
+        <div className="card-exam-specs-row">
+          <div className="spec-item" title="Examination Duration">
+            <Clock size={13} className="spec-icon" />
             <span>{paper.durationMinutes} Mins</span>
           </div>
-          <div className="stat-item" title="Maximum Marks">
-            <Award size={14} className="stat-icon" />
+          <span className="spec-dot">•</span>
+          <div className="spec-item" title="Maximum Theory Marks">
+            <Award size={13} className="spec-icon" />
             <span>{paper.maxMarks} Marks</span>
           </div>
-          <div className={`diff-tag diff-${paper.difficulty.toLowerCase()}`}>
-            {paper.difficulty}
+          <span className="spec-dot">•</span>
+          <div className="spec-item" title="Total Questions in Paper">
+            <FileText size={13} className="spec-icon" />
+            <span>{questionTotal} Questions</span>
           </div>
         </div>
 
-        {/* Interactive Syllabus Coverage (Prompt Requirement: Clickable button, hidden by default) */}
+        {/* SYLLABUS: Chapter & Topic Coverage with Interactive Clickable Accordion */}
         <div 
           className={`card-syllabus-container ${isSyllabusExpanded ? 'is-expanded' : ''}`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="syllabus-header-row">
-            <span className="syllabus-section-label">SYLLABUS COVERAGE</span>
+            <span className="syllabus-section-label">Syllabus Coverage</span>
             {paper.syllabusAudit && (
               <span className="syllabus-coverage-badge">
                 {paper.syllabusCoverage?.length || 0} Chapters • {paper.syllabusAudit?.uniqueTopicsCount || 0} Topics
@@ -114,13 +130,13 @@ export default function PaperCard({
               setIsSyllabusExpanded(!isSyllabusExpanded);
             }}
             aria-expanded={isSyllabusExpanded}
-            title={isSyllabusExpanded ? 'Collapse syllabus coverage details' : 'Expand full chapter and topic breakdown'}
+            title={isSyllabusExpanded ? 'Collapse syllabus details' : 'Expand full chapter and topic breakdown'}
           >
             <span>{isSyllabusExpanded ? 'Hide Syllabus Details' : 'View Syllabus Details'}</span>
             {isSyllabusExpanded ? (
-              <ChevronUp size={15} className="syllabus-toggle-icon" />
+              <ChevronUp size={14} className="syllabus-toggle-icon" />
             ) : (
-              <ChevronDown size={15} className="syllabus-toggle-icon" />
+              <ChevronDown size={14} className="syllabus-toggle-icon" />
             )}
           </button>
 
@@ -161,47 +177,38 @@ export default function PaperCard({
           )}
         </div>
 
-        {/* Pedagogical Feature Badges */}
-        <div className="paper-features-bar">
-          <span className="feature-pill exam-prob-badge" title="AI Exam Quality Score: 90+/100 (High-Yield Board Alignment)">
-            <Award size={12} className="text-amber-400" />
-            <span>90+ Quality</span>
-          </span>
-          {paper.pattern2026 && (
-            <span className="feature-pill pattern-2026-badge" title="Aligned with Official 2027 Board Examination Blueprint">
-              <Sparkles size={12} className="text-amber-400" />
-              <span>2027 Pattern</span>
-            </span>
-          )}
-          <span className="feature-pill" title="Math and science formulas rendered">
-            <CheckCircle size={12} className="text-emerald-400" />
-            <span>Formulas Formatted</span>
-          </span>
-          <span className="feature-pill" title="Detailed Step-by-Step Marking Scheme">
-            <CheckCircle size={12} className="text-indigo-400" />
+        {/* QUALITY INDICATORS: Marking scheme, Solutions, Answer key, Verified PYQ */}
+        <div className="paper-quality-indicators">
+          <span className="quality-item" title="Comprehensive Step-by-Step Marking Scheme Included">
+            <CheckCircle2 size={12} className="text-indigo-400" />
             <span>Marking Scheme</span>
           </span>
-          <span className="feature-pill" title="Step-by-step solutions for every section">
-            <CheckCircle size={12} className="text-cyan-400" />
+          <span className="quality-item" title="Step-by-Step Solutions Included">
+            <CheckCircle2 size={12} className="text-cyan-400" />
             <span>Solutions</span>
           </span>
+          <span className="quality-item" title="Complete Official Answer Key">
+            <CheckCircle2 size={12} className="text-emerald-400" />
+            <span>Answer Key</span>
+          </span>
           {isPYQ && (
-            <span className="feature-pill pyq-verified" title="Official Archive Metadata & Link">
+            <span className="quality-item quality-pyq" title="Authentic Previous Year Board Examination Archive">
               <ShieldCheck size={12} className="text-amber-400" />
-              <span>Licensed Metadata</span>
+              <span>Verified PYQ</span>
             </span>
           )}
         </div>
       </div>
 
-      {/* Card Action Footer */}
+      {/* BOTTOM: Prominent Open Exam Paper Button */}
       <div className="card-footer">
         <button
-          className="btn-open-paper"
+          type="button"
+          className="btn-open-paper-premium"
           onClick={() => onOpenPaper(paper)}
         >
           <span>Open Exam Paper</span>
-          <ChevronRight size={16} />
+          <ArrowRight size={15} className="btn-arrow-icon" />
         </button>
       </div>
     </div>

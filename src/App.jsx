@@ -19,7 +19,9 @@ import {
   FileQuestion,
   Search,
   RotateCcw,
-  X
+  X,
+  LayoutGrid,
+  Rows
 } from 'lucide-react';
 
 export default function App() {
@@ -40,6 +42,7 @@ export default function App() {
 
   const [sortBy, setSortBy] = useState('recommended');
   const [visibleCount, setVisibleCount] = useState(40);
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'compact'
   const observerTarget = useRef(null);
 
   // LocalStorage Bookmarks & Favorites
@@ -258,66 +261,108 @@ export default function App() {
 
         {/* Papers Catalog Section */}
         <section className="catalog-section" id="question-papers-catalog">
-          {/* Active Subject Banner if selected */}
+          {/* Active Subject Filter Banner (Section 3) */}
           {activeSubjectObj && (
             <div className="active-subject-banner">
-              <div className="active-subj-info">
-                <span className="active-subj-icon">{activeSubjectObj.icon}</span>
-                <div>
-                  <div className="active-subj-sub">Active Subject Filter</div>
-                  <h3 className="active-subj-title">
-                    {activeSubjectObj.name} {filters.classLevel !== 'ALL' ? `• Class ${filters.classLevel}` : ''}
-                  </h3>
+              <div className="active-subj-left">
+                <div className="active-subj-icon-box">{activeSubjectObj.icon}</div>
+                <div className="active-subj-details">
+                  <div className="active-subj-meta-row">
+                    <span className="active-meta-pill">{filters.board} Board</span>
+                    <span className="active-meta-pill">Class {filters.classLevel}th</span>
+                    {activeSubjectObj.code && (
+                      <span className="active-meta-pill code-pill">Subject Code: {activeSubjectObj.code}</span>
+                    )}
+                    {activeSubjectObj.textbooks && (
+                      <span className="active-meta-pill textbook-pill">{activeSubjectObj.textbooks}</span>
+                    )}
+                  </div>
+                  <h2 className="active-subj-title">{activeSubjectObj.name}</h2>
                 </div>
               </div>
-              <div className="active-subj-actions">
-                <span className="active-subj-count-badge">
-                  {filteredPapers.length} Papers Available
-                </span>
+              <div className="active-subj-right">
+                <div className="active-subj-count-pill">
+                  <strong>{filteredPapers.length}</strong>
+                  <span>Papers Available</span>
+                </div>
                 <button
+                  type="button"
                   className="clear-subj-filter-btn"
                   onClick={() => setFilters(prev => ({ ...prev, subjectId: 'ALL', chapter: 'ALL' }))}
-                  title="Clear subject filter and view all"
+                  title="Clear subject filter and browse all subjects"
                 >
                   <X size={14} />
-                  <span>Show All Subjects</span>
+                  <span>View All Subjects</span>
                 </button>
               </div>
             </div>
           )}
 
-          {/* Header Bar */}
+          {/* Catalog Listing Header (Section 7) */}
           <div className="catalog-header-bar">
             <div className="catalog-heading-group">
-              <h2 className="catalog-heading">
-                {filters.onlyBookmarks
-                  ? 'Saved Bookmarks'
-                  : (filters.onlyFavorites ? 'Favorite Papers' : 'Question Papers')}
-              </h2>
-              <span className="catalog-subheading">
-                Showing {displayedPapers.length === filteredPapers.length ? `all ${filteredPapers.length}` : `${displayedPapers.length} of ${filteredPapers.length}`} matching papers
-              </span>
+              <div className="catalog-title-row">
+                <h2 className="catalog-heading">
+                  {filters.onlyBookmarks
+                    ? 'Saved Bookmarks'
+                    : (filters.onlyFavorites ? 'Favorite Papers' : 'Question Papers')}
+                </h2>
+                <span className="catalog-count-pill">
+                  {displayedPapers.length === filteredPapers.length 
+                    ? `${filteredPapers.length} Papers` 
+                    : `${displayedPapers.length} of ${filteredPapers.length} Papers`}
+                </span>
+              </div>
+              <p className="catalog-subheading">
+                Comprehensive 2026/2027 Pattern Blueprint Examination Library with Complete Solutions & Marking Schemes
+              </p>
             </div>
 
-            <div className="catalog-sort-group">
-              <span className="sort-label">Sort By:</span>
-              <select
-                className="sort-select"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <option value="recommended">Recommended & High Yield</option>
-                <option value="newest">Latest Session (Year Desc)</option>
-                <option value="difficulty">Difficulty (Hardest First)</option>
-                <option value="marks">Maximum Marks</option>
-              </select>
+            <div className="catalog-controls-right">
+              {/* View Mode Toggle */}
+              <div className="catalog-view-toggle">
+                <button
+                  type="button"
+                  className={`view-toggle-btn ${viewMode === 'grid' ? 'active' : ''}`}
+                  onClick={() => setViewMode('grid')}
+                  title="Grid View (3 Columns)"
+                  aria-label="Grid view"
+                >
+                  <LayoutGrid size={15} />
+                </button>
+                <button
+                  type="button"
+                  className={`view-toggle-btn ${viewMode === 'compact' ? 'active' : ''}`}
+                  onClick={() => setViewMode('compact')}
+                  title="Compact View"
+                  aria-label="Compact view"
+                >
+                  <Rows size={15} />
+                </button>
+              </div>
+
+              {/* Sorting Dropdown */}
+              <div className="catalog-sort-group">
+                <span className="sort-label">Sort:</span>
+                <select
+                  className="sort-select"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  aria-label="Sort question papers"
+                >
+                  <option value="recommended">Recommended & High Yield</option>
+                  <option value="newest">Latest Session (Year Desc)</option>
+                  <option value="difficulty">Difficulty (Hardest First)</option>
+                  <option value="marks">Maximum Marks</option>
+                </select>
+              </div>
             </div>
           </div>
 
           {/* Catalog Grid */}
           {displayedPapers.length > 0 ? (
             <>
-              <div className="papers-grid">
+              <div className={`papers-grid ${viewMode === 'compact' ? 'is-compact-grid' : ''}`}>
                 {displayedPapers.map(paper => (
                   <PaperCard
                     key={paper.id}
@@ -327,6 +372,7 @@ export default function App() {
                     onToggleBookmark={toggleBookmark}
                     onToggleFavorite={toggleFavorite}
                     onOpenPaper={(p) => setActivePaper(p)}
+                    isCompact={viewMode === 'compact'}
                   />
                 ))}
               </div>
