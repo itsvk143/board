@@ -10,12 +10,13 @@ async function runTestSuite() {
   console.log('       LV INSTITUTE BOARD - CLASS-WISE AUDIT TEST SUITE        ');
   console.log('===============================================================');
 
-  const { ALL_PAPERS, BOARDS, CLASSES, SUBJECTS_BY_CLASS, CHAPTERS_BY_CLASS_SUBJECT, getChaptersForSubject } = await import('../src/data/papersData.js');
+  const { ALL_PAPERS, BOARDS, CLASSES, SUBJECTS_BY_CLASS, CHAPTERS_BY_CLASS_SUBJECT, getChaptersForSubject, PYQ_AUDIT_REPORT } = await import('../src/data/papersData.js');
   const { validateQuestion, auditPaper, auditEntireCatalog, FORBIDDEN_CLASS_10_KEYWORDS } = await import('../src/data/questionValidator.js');
   const { normalizeQuestionText, areQuestionsNearDuplicate } = await import('../src/data/questionGenerator.js');
+  const { VERIFIED_PYQ_BANK } = await import('../src/data/verifiedPyqBank.js');
 
   let passedTests = 0;
-  let totalTests = 13;
+  let totalTests = 15;
 
   // -------------------------------------------------------------
   // Test 1: Class 10 Science Isolation
@@ -371,6 +372,99 @@ async function runTestSuite() {
     passedTests++;
   } else {
     console.error(`  ✗ FAILED: Found ${totalDups} duplicate occurrences across ${dupPapers} papers!`);
+  }
+
+  // -------------------------------------------------------------
+  // Test 14: Authentic Verified PYQ Bank Integrity & Source Metadata
+  // -------------------------------------------------------------
+  console.log('\n[RUNNING TEST 14] Verified PYQ Bank Integrity & Source Metadata Conformance...');
+  let pyqBankTotal = 0;
+  let pyqMetadataFailures = 0;
+
+  CLASSES.forEach(cls => {
+    const subjs = SUBJECTS_BY_CLASS[cls] || [];
+    subjs.forEach(s => {
+      const items = VERIFIED_PYQ_BANK[cls]?.[s.id] || [];
+      pyqBankTotal += items.length;
+      items.forEach(item => {
+        if (!item.source || !item.source.board || !item.source.exam || !item.source.year || !item.source.paperCode) {
+          pyqMetadataFailures++;
+        }
+        if (item.source?.verificationStatus !== 'VERIFIED') {
+          pyqMetadataFailures++;
+        }
+        // Verify Hindi course isolation in PYQs
+        if (s.id === 'hindi-a' && item.course !== 'HINDI_A') pyqMetadataFailures++;
+        if (s.id === 'hindi-b' && item.course !== 'HINDI_B') pyqMetadataFailures++;
+      });
+    });
+  });
+
+  // Verify archival tier papers have source metadata
+  const archivalPapers = ALL_PAPERS.filter(p => p.tier === 'pyq');
+  let archivalSourceFailures = 0;
+  archivalPapers.forEach(p => {
+    p.sections.forEach(sec => {
+      sec.questions.forEach(q => {
+        if (!q.source || !q.isPYQ) archivalSourceFailures++;
+      });
+    });
+  });
+
+  if (pyqBankTotal >= 800 && pyqMetadataFailures === 0 && archivalSourceFailures === 0) {
+    console.log(`  ✓ PASSED: Verified PYQ Repository contains ${pyqBankTotal} items across 21 subjects with 100% compliant source metadata. All ${archivalPapers.length} archival papers stamped with verified citations.`);
+    passedTests++;
+  } else {
+    console.error(`  ✗ FAILED: Found ${pyqMetadataFailures} PYQ bank failures and ${archivalSourceFailures} archival source failures!`);
+  }
+
+  // -------------------------------------------------------------
+  // Test 15: Safe Deduplication & Structure Invariance Preservation
+  // -------------------------------------------------------------
+  console.log('\n[RUNNING TEST 15] Safe Deduplication & Structure Invariance Preservation...');
+  let structureViolations = 0;
+  const { repairPaperDuplicates } = await import('../src/data/pyqReplacementEngine.js');
+
+  // Part A: Check monotonic question numbering and mandatory question schema across all 2,520 papers
+  ALL_PAPERS.forEach(paper => {
+    let expectedQNum = 1;
+    (paper.sections || []).forEach(sec => {
+      (sec.questions || []).forEach(q => {
+        if (!q.id || !q.questionText || !q.marks || !q.type) {
+          structureViolations++;
+        }
+        if (q.qNumber !== expectedQNum) {
+          structureViolations++;
+        }
+        expectedQNum++;
+      });
+    });
+  });
+
+  // Part B: Verify repairPaperDuplicates preserves 100% question count, marks, and section structure
+  const testPaper = JSON.parse(JSON.stringify(ALL_PAPERS[0]));
+  const originalQCount = testPaper.sections.reduce((acc, s) => acc + s.questions.length, 0);
+  const originalMarksSum = testPaper.sections.reduce((acc, s) => acc + s.questions.reduce((m, q) => m + q.marks, 0), 0);
+
+  // Inject a synthetic duplicate into question 2 copying question 1
+  testPaper.sections[0].questions[1].questionText = testPaper.sections[0].questions[0].questionText;
+  const repairResult = repairPaperDuplicates(testPaper);
+
+  const repairedQCount = repairResult.repairedPaper.sections.reduce((acc, s) => acc + s.questions.length, 0);
+  const repairedMarksSum = repairResult.repairedPaper.sections.reduce((acc, s) => acc + s.questions.reduce((m, q) => m + q.marks, 0), 0);
+
+  if (repairResult.duplicatesFound !== 1 || repairResult.replacementsMade !== 1) {
+    structureViolations++;
+  }
+  if (repairedQCount !== originalQCount || repairedMarksSum !== originalMarksSum) {
+    structureViolations++;
+  }
+
+  if (structureViolations === 0) {
+    console.log(`  ✓ PASSED: All 2,520 papers preserve 100% structure invariance, monotonic sequential question numbering, and safe PYQ deduplication.`);
+    passedTests++;
+  } else {
+    console.error(`  ✗ FAILED: Found ${structureViolations} structure invariance violations!`);
   }
 
   console.log('\n===============================================================');

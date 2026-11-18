@@ -11,6 +11,7 @@ import { getBlueprint } from './blueprint2026.js';
 import { generate2026AlignedSections } from './questionGenerator.js';
 import { getSubjectTrendAnalysis } from './trendAnalysis.js';
 import { auditPaperSyllabus } from './syllabusAuditor.js';
+import { auditAndRepairAllPapers } from './pyqReplacementEngine.js';
 
 export const BOARDS = ['CBSE', 'ICSE', 'IB'];
 export const CLASSES = ['10', '12'];
@@ -758,8 +759,14 @@ export function buildQuestionPaperCatalog() {
     });
   });
 
-  return catalog;
+  // Audit catalog for duplicates, replace any collisions with authentic PYQs, and stamp verified source metadata
+  const pyqAuditReport = auditAndRepairAllPapers(catalog);
+
+  return { catalog, pyqAuditReport };
 }
 
+const builtData = buildQuestionPaperCatalog();
+
 // Pre-computed catalog singleton for instant fast loading
-export const ALL_PAPERS = buildQuestionPaperCatalog();
+export const ALL_PAPERS = builtData.catalog;
+export const PYQ_AUDIT_REPORT = builtData.pyqAuditReport;

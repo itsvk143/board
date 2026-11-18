@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   Award,
   Clock,
+  ShieldCheck,
   MoreHorizontal,
   Maximize2,
   Minimize2,
@@ -831,6 +832,12 @@ export default function PaperViewerModal({
                               {isProbExpanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
                             </button>
                           )}
+                          {q.source && (
+                            <span className="doc-pyq-verified-badge no-print" title={`Authentic Previous Year Question: ${q.source.exam} • Year ${q.source.year}`}>
+                              <ShieldCheck size={12} className="text-emerald-400" />
+                              <span>Verified PYQ: {q.source.board} {q.source.year} • Set {q.source.paperCode}</span>
+                            </span>
+                          )}
                         </div>
                         <span className="doc-q-marks">[{q.marks} {q.marks === 1 ? 'Mark' : 'Marks'}]</span>
                       </div>
@@ -983,6 +990,14 @@ export default function PaperViewerModal({
                           <div className="solution-card-body">
                             <LatexRenderer content={q.solution} />
                           </div>
+                        </div>
+                      )}
+
+                      {/* Official PYQ Citation */}
+                      {q.source && (
+                        <div className="doc-pyq-source-cite no-print">
+                          <Award size={13} className="text-cyan-400" />
+                          <span><strong>Official Board Citation:</strong> {q.source.exam} (Year {q.source.year}, Paper Code: {q.source.paperCode}) — Verified Authentic Source</span>
                         </div>
                       )}
                     </article>
