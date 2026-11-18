@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Navbar from './components/Navbar';
 import FilterSidebar from './components/FilterSidebar';
 import PaperCard from './components/PaperCard';
@@ -16,15 +16,11 @@ import {
   BookOpen,
   GraduationCap,
   Layers,
-  ChevronLeft,
-  ChevronRight,
   FileQuestion,
   Search,
   RotateCcw,
   X
 } from 'lucide-react';
-
-const PAPERS_PER_PAGE = 12;
 
 export default function App() {
   const [filters, setFilters] = useState({
@@ -43,7 +39,8 @@ export default function App() {
   });
 
   const [sortBy, setSortBy] = useState('recommended');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(40);
+  const observerTarget = useRef(null);
 
   // LocalStorage Bookmarks & Favorites
   const [bookmarks, setBookmarks] = useState(() => getStoredList('classboard_bookmarks_v1'));
@@ -152,9 +149,9 @@ export default function App() {
     saveStoredList('classboard_favorites_v1', favorites);
   }, [favorites]);
 
-  // Reset pagination on filter changes
+  // Reset visible papers count on filter or sort changes
   useEffect(() => {
-    setCurrentPage(1);
+    setVisibleCount(40);
   }, [filters, sortBy]);
 
   const toggleBookmark = (id) => {
@@ -196,12 +193,29 @@ export default function App() {
     return allSubjs.find(s => s.id === filters.subjectId);
   }, [filters.subjectId]);
 
-  // Paginated Slice
-  const totalPages = Math.ceil(filteredPapers.length / PAPERS_PER_PAGE) || 1;
-  const paginatedPapers = useMemo(() => {
-    const start = (currentPage - 1) * PAPERS_PER_PAGE;
-    return filteredPapers.slice(start, start + PAPERS_PER_PAGE);
-  }, [filteredPapers, currentPage]);
+  // Infinite scroll: dynamically load more papers on scrolling
+  useEffect(() => {
+    if (!observerTarget.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleCount(prev => Math.min(prev + 30, filteredPapers.length));
+        }
+      },
+      { threshold: 0.1, rootMargin: '300px' }
+    );
+
+    observer.observe(observerTarget.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [filteredPapers.length]);
+
+  // Continuously displayed papers on scroll
+  const displayedPapers = useMemo(() => {
+    return filteredPapers.slice(0, visibleCount);
+  }, [filteredPapers, visibleCount]);
 
   return (
     <div className="app-root">
@@ -281,7 +295,7 @@ export default function App() {
                   : (filters.onlyFavorites ? 'Favorite Papers' : 'Question Papers')}
               </h2>
               <span className="catalog-subheading">
-                Showing {paginatedPapers.length} of {filteredPapers.length} matching papers
+                Showing {displayedPapers.length === filteredPapers.length ? `all ${filteredPapers.length}` : `${displayedPapers.length} of ${filteredPapers.length}`} matching papers
               </span>
             </div>
 
@@ -301,10 +315,10 @@ export default function App() {
           </div>
 
           {/* Catalog Grid */}
-          {paginatedPapers.length > 0 ? (
+          {displayedPapers.length > 0 ? (
             <>
               <div className="papers-grid">
-                {paginatedPapers.map(paper => (
+                {displayedPapers.map(paper => (
                   <PaperCard
                     key={paper.id}
                     paper={paper}
@@ -317,52 +331,17 @@ export default function App() {
                 ))}
               </div>
 
-              {/* Pagination Controls */}
-              {totalPages > 1 && (
-                <div className="pagination-wrapper">
-                  <button
-                    className="page-btn"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
-                    title="Previous Page"
-                  >
-                    <ChevronLeft size={18} />
-                  </button>
+              {/* Infinite Scroll Sentinel */}
+              {displayedPapers.length < filteredPapers.length && (
+                <div ref={observerTarget} className="scroll-loading-sentinel">
+                  <div className="scroll-loading-spinner" />
+                  <span>Loading more papers on scroll...</span>
+                </div>
+              )}
 
-                  {[...Array(totalPages)].map((_, i) => {
-                    const pageNum = i + 1;
-                    // Show first, last, and window around current
-                    if (
-                      pageNum === 1 ||
-                      pageNum === totalPages ||
-                      (pageNum >= currentPage - 2 && pageNum <= currentPage + 2)
-                    ) {
-                      return (
-                        <button
-                          key={pageNum}
-                          className={`page-btn ${currentPage === pageNum ? 'active' : ''}`}
-                          onClick={() => setCurrentPage(pageNum)}
-                        >
-                          {pageNum}
-                        </button>
-                      );
-                    } else if (
-                      pageNum === currentPage - 3 ||
-                      pageNum === currentPage + 3
-                    ) {
-                      return <span key={pageNum} className="pagination-ellipsis">…</span>;
-                    }
-                    return null;
-                  })}
-
-                  <button
-                    className="page-btn"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
-                    title="Next Page"
-                  >
-                    <ChevronRight size={18} />
-                  </button>
+              {displayedPapers.length >= filteredPapers.length && filteredPapers.length > 0 && (
+                <div className="catalog-end-note">
+                  <span>Showing all {filteredPapers.length} question papers</span>
                 </div>
               )}
             </>
