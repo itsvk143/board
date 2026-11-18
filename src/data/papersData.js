@@ -21,7 +21,8 @@ export const SUBJECTS_BY_CLASS = {
     { id: 'science', name: 'Science', icon: '🔬' },
     { id: 'social-science', name: 'Social Science', icon: '🌍' },
     { id: 'english', name: 'English Language & Lit', icon: '📖' },
-    { id: 'hindi', name: 'Hindi (Course A & B)', icon: '✍️' },
+    { id: 'hindi-a', name: 'Hindi Course A', code: '002', icon: '✍️', textbooks: 'Kshitij & Kritika' },
+    { id: 'hindi-b', name: 'Hindi Course B', code: '085', icon: '📖', textbooks: 'Sparsh & Sanchayan' },
     { id: 'computer-applications', name: 'Computer Applications & IT', icon: '💻' },
     { id: 'artificial-intelligence', name: 'Artificial Intelligence', icon: '🤖' },
     { id: 'sanskrit', name: 'Sanskrit', icon: '📜' },
@@ -114,13 +115,31 @@ export const CHAPTERS_BY_CLASS_SUBJECT = {
       'Formal Letter & Grammar',
       'Poetry Analysis & Literary Devices'
     ],
+    'hindi-a': [
+      'क्षितिज: काव्य खंड (सूरदास के पद, तुलसीदास, जयशंकर प्रसाद, निराला, नागार्जुन, मंगलेश डबराल)',
+      'क्षितिज: गद्य खंड (नेताजी का चश्मा, बालगोबिन भगत, लखनवी अंदाज़, एक कहानी यह भी, नौबतखाने में इबादत, संस्कृति)',
+      'कृतिका: पूरक पाठ्यपुस्तक (माता का अँचल, साना-साना हाथ जोड़ि, मैं क्यों लिखता हूँ)',
+      'व्यावहारिक व्याकरण: रचना के आधार पर वाक्य भेद व रूपांतरण',
+      'व्यावहारिक व्याकरण: वाच्य (कर्तृवाच्य, कर्मवाच्य, भाववाच्य)',
+      'व्यावहारिक व्याकरण: पद-परिचय एवं व्याकरणिक इकाइयाँ',
+      'व्यावहारिक व्याकरण: अलंकार (श्लेष, उत्प्रेक्षा, अतिशयोक्ति, मानवीकरण)',
+      'रचनात्मक लेखन: अनुच्छेद, पत्र लेखन, ई-मेल, स्ववृत्त व संदेश लेखन'
+    ],
+    'hindi-b': [
+      'स्पर्श: पद्य खंड (कबीर की साखी, मीरा के पद, मैथिलीशरण गुप्त - मनुष्यता, पर्वत प्रदेश में पावस, तोप, कर चले हम फ़िदा, आत्मत्राण)',
+      'स्पर्श: गद्य खंड (बड़े भाई साहब, डायरी का एक पन्ना, तंतारा-वामीरो कथा, तीसरी कसम के शिल्पकार, अब कहाँ दूसरे के दुख से, पतझर में टूटी पत्तियाँ, कारतूस)',
+      'संचयन: पूरक पाठ्यपुस्तक (हरिहर काका, सपनों के-से दिन, टोपी शुक्ला)',
+      'व्यावहारिक व्याकरण: पदबंध (संज्ञा, सर्वनाम, विशेषण, क्रिया, क्रियाविशेषण पदबंध)',
+      'व्यावहारिक व्याकरण: रचना के आधार पर वाक्य रूपांतरण',
+      'व्यावहारिक व्याकरण: समास (समस्त पद एवं विग्रह)',
+      'व्यावहारिक व्याकरण: मुहावरे (अर्थ व वाक्य प्रयोग)',
+      'रचनात्मक लेखन: अनुच्छेद, औपचारिक पत्र, सूचना लेखन, विज्ञापन व लघुकथा'
+    ],
     'hindi': [
-      'क्षितिज: काव्य खंड (सूरदास के पद, तुलसीदास, जयशंकर प्रसाद)',
-      'क्षितिज: गद्य खंड (नेताजी का चश्मा, बालगोबिन भगत, लखनवी अंदाज़)',
-      'कृतिका: पूरक पाठ्यपुस्तक (माता का अँचल, साना-साना हाथ जोड़ि)',
-      'व्यावहारिक व्याकरण (रचना के आधार पर वाक्य भेद, वाच्य, पद-परिचय)',
-      'अलंकार व रस सिद्धांत (काव्य सौंदर्य एवं रस भेद)',
-      'रचनात्मक लेखन (अनुच्छेद लेखन, औपचारिक/अनौपचारिक पत्र, ई-मेल व विज्ञापन)'
+      'क्षितिज: काव्य खंड (सूरदास के पद, तुलसीदास, जयशंकर प्रसाद, निराला, नागार्जुन, मंगलेश डबराल)',
+      'क्षितिज: गद्य खंड (नेताजी का चश्मा, बालगोबिन भगत, लखनवी अंदाज़, एक कहानी यह भी, नौबतखाने में इबादत, संस्कृति)',
+      'कृतिका: पूरक पाठ्यपुस्तक (माता का अँचल, साना-साना हाथ जोड़ि, मैं क्यों लिखता हूँ)',
+      'व्यावहारिक व्याकरण: रचना के आधार पर वाक्य भेद व रूपांतरण'
     ],
     'computer-applications': [
       'Networking Basics & Internet Protocols (HTTP, FTP, TCP/IP)',
@@ -368,13 +387,31 @@ export const CHAPTERS_BY_SUBJECT = {
     'Database Concepts & SQL Queries',
     'Cyber Ethics & Society'
   ],
+  'hindi-a': [
+    'क्षितिज: काव्य खंड (सूरदास के पद, तुलसीदास, जयशंकर प्रसाद, निराला, नागार्जुन, मंगलेश डबराल)',
+    'क्षितिज: गद्य खंड (नेताजी का चश्मा, बालगोबिन भगत, लखनवी अंदाज़, एक कहानी यह भी, नौबतखाने में इबादत, संस्कृति)',
+    'कृतिका: पूरक पाठ्यपुस्तक (माता का अँचल, साना-साना हाथ जोड़ि, मैं क्यों लिखता हूँ)',
+    'व्यावहारिक व्याकरण: रचना के आधार पर वाक्य भेद व रूपांतरण',
+    'व्यावहारिक व्याकरण: वाच्य (कर्तृवाच्य, कर्मवाच्य, भाववाच्य)',
+    'व्यावहारिक व्याकरण: पद-परिचय एवं व्याकरणिक इकाइयाँ',
+    'व्यावहारिक व्याकरण: अलंकार (श्लेष, उत्प्रेक्षा, अतिशयोक्ति, मानवीकरण)',
+    'रचनात्मक लेखन: अनुच्छेद, पत्र लेखन, ई-मेल, स्ववृत्त व संदेश लेखन'
+  ],
+  'hindi-b': [
+    'स्पर्श: पद्य खंड (कबीर की साखी, मीरा के पद, मैथिलीशरण गुप्त - मनुष्यता, पर्वत प्रदेश में पावस, तोप, कर चले हम फ़िदा, आत्मत्राण)',
+    'स्पर्श: गद्य खंड (बड़े भाई साहब, डायरी का एक पन्ना, तंतारा-वामीरो कथा, तीसरी कसम के शिल्पकार, अब कहाँ दूसरे के दुख से, पतझर में टूटी पत्तियाँ, कारतूस)',
+    'संचयन: पूरक पाठ्यपुस्तक (हरिहर काका, सपनों के-से दिन, टोपी शुक्ला)',
+    'व्यावहारिक व्याकरण: पदबंध (संज्ञा, सर्वनाम, विशेषण, क्रिया, क्रियाविशेषण पदबंध)',
+    'व्यावहारिक व्याकरण: रचना के आधार पर वाक्य रूपांतरण',
+    'व्यावहारिक व्याकरण: समास (समस्त पद एवं विग्रह)',
+    'व्यावहारिक व्याकरण: मुहावरे (अर्थ व वाक्य प्रयोग)',
+    'रचनात्मक लेखन: अनुच्छेद, औपचारिक पत्र, सूचना लेखन, विज्ञापन व लघुकथा'
+  ],
   'hindi': [
     'क्षितिज: काव्य खंड (सूरदास के पद, तुलसीदास, जयशंकर प्रसाद)',
     'क्षितिज: गद्य खंड (नेताजी का चश्मा, बालगोबिन भगत, लखनवी अंदाज़)',
     'कृतिका: पूरक पाठ्यपुस्तक (माता का अँचल, साना-साना हाथ जोड़ि)',
-    'व्यावहारिक व्याकरण (रचना के आधार पर वाक्य भेद, वाच्य, पद-परिचय)',
-    'अलंकार व रस सिद्धांत (काव्य सौंदर्य एवं रस भेद)',
-    'रचनात्मक लेखन (अनुच्छेद लेखन, औपचारिक/अनौपचारिक पत्र, ई-मेल व विज्ञापन)'
+    'व्यावहारिक व्याकरण (रचना के आधार पर वाक्य भेद, वाच्य, पद-परिचय)'
   ],
   'computer-applications': [
     'Networking Basics & Internet Protocols (HTTP, FTP, TCP/IP)',
@@ -492,7 +529,7 @@ function generateLatexDocument(paper) {
 \\geometry{margin=1in}
 
 \\title{\\textbf{${paper.board} Class ${paper.classLevel} Examination}\\\\
-\\large ${paper.subject.toUpperCase()} --- ${paper.tierTitle}}
+\\large ${paper.subject.toUpperCase()}${paper.subjectCode ? ' (CODE ' + paper.subjectCode + ')' : ''} --- ${paper.tierTitle}}
 \\author{\\textbf{Academic Year ${paper.academicSession || '2027'}} \\quad | \\quad Duration: ${paper.durationMinutes} Mins \\quad | \\quad Max Marks: ${paper.maxMarks}}
 \\date{}
 
@@ -538,6 +575,8 @@ export function buildQuestionPaperCatalog() {
         const blueprint = getBlueprint(board, classLevel, subjectId);
         const trendAnalysis = getSubjectTrendAnalysis(subjectId, classLevel, board);
 
+        const subjectDisplayName = subj.code ? `${subj.name} (Code ${subj.code})` : subj.name;
+
         // 1. 20 Original Practice Papers (Practice 1 to 20 — 10 High-Yield Added)
         for (let i = 1; i <= 20; i++) {
           const year = YEARS[(i - 1) % YEARS.length];
@@ -548,11 +587,14 @@ export function buildQuestionPaperCatalog() {
           const paper = {
             id: paperId,
             paperNumber: i,
-            title: `${board} Class ${classLevel} ${subj.name} — Practice Paper #${i}`,
+            title: `${board} Class ${classLevel} ${subjectDisplayName} — Practice Paper #${i}`,
             board,
             classLevel,
             subject: subj.name,
             subjectId,
+            subjectCode: subj.code || null,
+            course: subj.id === 'hindi-a' ? 'HINDI_A' : (subj.id === 'hindi-b' ? 'HINDI_B' : null),
+            textbooks: subj.textbooks || null,
             tier: 'practice',
             tierTitle: `Original Practice Paper #${i}`,
             badge: null,
@@ -602,11 +644,14 @@ export function buildQuestionPaperCatalog() {
           const paper = {
             id: paperId,
             paperNumber: i,
-            title: `${board} Class ${classLevel} ${subj.name} — Official Model Paper #${i}`,
+            title: `${board} Class ${classLevel} ${subjectDisplayName} — Official Model Paper #${i}`,
             board,
             classLevel,
             subject: subj.name,
             subjectId,
+            subjectCode: subj.code || null,
+            course: subj.id === 'hindi-a' ? 'HINDI_A' : (subj.id === 'hindi-b' ? 'HINDI_B' : null),
+            textbooks: subj.textbooks || null,
             tier: 'model',
             tierTitle: `Model / Blueprint Paper #${i}`,
             badge: 'Curriculum Model Set',
@@ -662,11 +707,14 @@ export function buildQuestionPaperCatalog() {
           const paper = {
             id: paperId,
             paperNumber: i,
-            title: `${board} Class ${classLevel} ${subj.name} — Session ${sessionYear} (Official Archive)`,
+            title: `${board} Class ${classLevel} ${subjectDisplayName} — Session ${sessionYear} (Official Archive)`,
             board,
             classLevel,
             subject: subj.name,
             subjectId,
+            subjectCode: subj.code || null,
+            course: subj.id === 'hindi-a' ? 'HINDI_A' : (subj.id === 'hindi-b' ? 'HINDI_B' : null),
+            textbooks: subj.textbooks || null,
             tier: 'pyq',
             tierTitle: `Official ${sessionYear} Archive`,
             badge: 'Archival PYQ (Verified Metadata)',

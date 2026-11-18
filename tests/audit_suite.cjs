@@ -12,9 +12,10 @@ async function runTestSuite() {
 
   const { ALL_PAPERS, BOARDS, CLASSES, SUBJECTS_BY_CLASS, CHAPTERS_BY_CLASS_SUBJECT, getChaptersForSubject } = await import('../src/data/papersData.js');
   const { validateQuestion, auditPaper, auditEntireCatalog, FORBIDDEN_CLASS_10_KEYWORDS } = await import('../src/data/questionValidator.js');
+  const { normalizeQuestionText, areQuestionsNearDuplicate } = await import('../src/data/questionGenerator.js');
 
   let passedTests = 0;
-  let totalTests = 11;
+  let totalTests = 13;
 
   // -------------------------------------------------------------
   // Test 1: Class 10 Science Isolation
@@ -116,9 +117,9 @@ async function runTestSuite() {
   }
 
   // -------------------------------------------------------------
-  // Test 5: All Remaining Subjects (All 20 Subjects)
+  // Test 5: All Subjects Full Class Verification (All 21 Subjects)
   // -------------------------------------------------------------
-  console.log('\n[RUNNING TEST 5] All 20 Subjects Full Class Verification...');
+  console.log('\n[RUNNING TEST 5] All 21 Subjects Full Class Verification...');
   let subjectAuditFailures = 0;
 
   CLASSES.forEach(cls => {
@@ -133,7 +134,7 @@ async function runTestSuite() {
   });
 
   if (subjectAuditFailures === 0) {
-    console.log(`  ✓ PASSED: All 20 subjects across Class 10 (8 subjects) and Class 12 (12 subjects) contain exactly 40 papers per board (120 per subject).`);
+    console.log(`  ✓ PASSED: All 21 subjects across Class 10 (9 subjects including Hindi A & B) and Class 12 (12 subjects) contain exactly 40 papers per board (120 per subject).`);
     passedTests++;
   } else {
     console.error(`  ✗ FAILED: ${subjectAuditFailures} subjects failed paper count check!`);
@@ -147,12 +148,12 @@ async function runTestSuite() {
   const icsePapers = ALL_PAPERS.filter(p => p.board === 'ICSE');
   const ibPapers = ALL_PAPERS.filter(p => p.board === 'IB');
 
-  const cbseOk = cbsePapers.length === 800;
-  const icseOk = icsePapers.length === 800;
-  const ibOk = ibPapers.length === 800;
+  const cbseOk = cbsePapers.length === 840;
+  const icseOk = icsePapers.length === 840;
+  const ibOk = ibPapers.length === 840;
 
   if (cbseOk && icseOk && ibOk) {
-    console.log(`  ✓ PASSED: CBSE (800 papers), ICSE (800 papers), and IB (800 papers) strictly separated with board blueprints.`);
+    console.log(`  ✓ PASSED: CBSE (840 papers), ICSE (840 papers), and IB (840 papers) strictly separated with board blueprints.`);
     passedTests++;
   } else {
     console.error('  ✗ FAILED: Board paper distribution is skewed!');
@@ -185,7 +186,7 @@ async function runTestSuite() {
   });
 
   if (docFailures === 0) {
-    console.log(`  ✓ PASSED: All 2,400 papers contain valid, accurately-titled and printable PDF source documents.`);
+    console.log(`  ✓ PASSED: All 2,520 papers contain valid, accurately-titled and printable PDF source documents.`);
     passedTests++;
   } else {
     console.error(`  ✗ FAILED: ${docFailures} papers had invalid document sources!`);
@@ -232,7 +233,7 @@ async function runTestSuite() {
   console.log(`    - Papers Failed: ${m.papersFailed}`);
 
   if (m.crossClassQuestions === 0 && m.invalidClassMapping === 0 && m.invalidSubjectMapping === 0 && m.invalidChapterMapping === 0 && m.papersFailed === 0) {
-    console.log(`  ✓ PASSED: 2,400 papers audited. 0 failures. ZERO cross-class contamination.`);
+    console.log(`  ✓ PASSED: 2,520 papers audited. 0 failures. ZERO cross-class contamination.`);
     passedTests++;
   } else {
     console.error('  ✗ FAILED: Platform catalog audit revealed errors!');
@@ -276,11 +277,100 @@ async function runTestSuite() {
     totalMappedQuestions += paperSum;
   });
 
-  if (syllabusFailures === 0 && totalMappedQuestions === 64920) {
-    console.log(`  ✓ PASSED: 100% of 2,400 papers have verified, question-derived syllabus coverage with granular chapter & topic trees (${totalMappedQuestions} questions, ${totalAuditedTopics} topic instances mapped).`);
+  if (syllabusFailures === 0 && totalMappedQuestions === 68040) {
+    console.log(`  ✓ PASSED: 100% of 2,520 papers have verified, question-derived syllabus coverage with granular chapter & topic trees (${totalMappedQuestions} questions, ${totalAuditedTopics} topic instances mapped).`);
     passedTests++;
   } else {
     console.error(`  ✗ FAILED: Found ${syllabusFailures} syllabus coverage integrity failures!`);
+  }
+
+  // -------------------------------------------------------------
+  // Test 12: CBSE Class 10 Hindi Course A (002) vs Course B (085) Isolation
+  // -------------------------------------------------------------
+  console.log('\n[RUNNING TEST 12] CBSE Class 10 Hindi Course A & B Isolation Verification...');
+  const hindiAPapers = ALL_PAPERS.filter(p => p.subjectId === 'hindi-a');
+  const hindiBPapers = ALL_PAPERS.filter(p => p.subjectId === 'hindi-b');
+  const mergedHindiPapers = ALL_PAPERS.filter(p => p.title.includes('Course A & B') || p.title.includes('Hindi (Course A & B)'));
+
+  let hindiIsolationFailures = 0;
+
+  // Check no merged papers exist
+  if (mergedHindiPapers.length > 0) {
+    console.error(`Found ${mergedHindiPapers.length} papers with combined 'Course A & B' title!`);
+    hindiIsolationFailures++;
+  }
+
+  // Verify Hindi Course A metadata & content
+  hindiAPapers.forEach(p => {
+    if (p.subjectCode !== '002' || p.course !== 'HINDI_A') hindiIsolationFailures++;
+    if (!p.title.includes('Course A') || !p.title.includes('002')) hindiIsolationFailures++;
+    // Verify no Course B content leaks into Course A
+    p.sections.forEach(sec => {
+      sec.questions.forEach(q => {
+        const text = (q.questionText + ' ' + (q.chapter || '')).toLowerCase();
+        if (text.includes('sparsh') || text.includes('sanchayan') || text.includes('बड़े भाई साहब') || text.includes('तंतारा-वामीरो') || text.includes('हरिहर काका')) {
+          hindiIsolationFailures++;
+        }
+      });
+    });
+  });
+
+  // Verify Hindi Course B metadata & content
+  hindiBPapers.forEach(p => {
+    if (p.subjectCode !== '085' || p.course !== 'HINDI_B') hindiIsolationFailures++;
+    if (!p.title.includes('Course B') || !p.title.includes('085')) hindiIsolationFailures++;
+    // Verify no Course A content leaks into Course B
+    p.sections.forEach(sec => {
+      sec.questions.forEach(q => {
+        const text = (q.questionText + ' ' + (q.chapter || '')).toLowerCase();
+        if (text.includes('kshitij') || text.includes('kritika') || text.includes('नेताजी का चश्मा') || text.includes('बालगोबिन भगत') || text.includes('माता का अँचल')) {
+          hindiIsolationFailures++;
+        }
+      });
+    });
+  });
+
+  if (hindiIsolationFailures === 0 && hindiAPapers.length === 120 && hindiBPapers.length === 120) {
+    console.log(`  ✓ PASSED: Hindi Course A (120 papers, Code 002) and Hindi Course B (120 papers, Code 085) strictly isolated with 0 cross-course contamination.`);
+    passedTests++;
+  } else {
+    console.error(`  ✗ FAILED: Hindi Course A and B isolation check failed (${hindiIsolationFailures} errors)!`);
+  }
+
+  // -------------------------------------------------------------
+  // Test 13: Platform-Wide Duplicate Question Elimination
+  // -------------------------------------------------------------
+  console.log('\n[RUNNING TEST 13] Platform-Wide Duplicate Elimination Verification...');
+  let totalDups = 0;
+  let dupPapers = 0;
+
+  ALL_PAPERS.forEach(paper => {
+    const seenNorm = new Set();
+    const seenStems = [];
+    let pDups = 0;
+
+    paper.sections.forEach(sec => {
+      sec.questions.forEach(q => {
+        const norm = normalizeQuestionText(q.questionText);
+        const isDup = seenNorm.has(norm) || seenStems.some(s => areQuestionsNearDuplicate(q.questionText, s));
+        if (isDup) {
+          pDups++;
+          totalDups++;
+        } else {
+          seenNorm.add(norm);
+          seenStems.push(q.questionText);
+        }
+      });
+    });
+
+    if (pDups > 0) dupPapers++;
+  });
+
+  if (totalDups === 0 && dupPapers === 0) {
+    console.log(`  ✓ PASSED: Exactly 0 duplicate questions across all 2,520 papers in the database.`);
+    passedTests++;
+  } else {
+    console.error(`  ✗ FAILED: Found ${totalDups} duplicate occurrences across ${dupPapers} papers!`);
   }
 
   console.log('\n===============================================================');
