@@ -64,6 +64,159 @@ function synthesizeUniqueVariant(base, type, qNum, paperNumber, subjectId, class
   const seed = (paperNumber * 43 + qNum * 19);
   const chapter = base?.chapter || 'Core Curriculum Standards';
 
+  // Dedicated NCERT Class 10 Science Procedural Synthesizer
+  if (classKey === '10' && (subjectId === 'science' || subjectId.includes('sci'))) {
+    if (type === 'MCQ') {
+      const sciMcqs = [
+        {
+          text: `Which of the following statements is scientifically correct regarding the concepts in '${chapter}'?`,
+          options: [
+            `(A) Chemical and physical processes in ${chapter} strictly obey the law of conservation of mass and energy.`,
+            `(B) The total mass of products in a chemical reaction is always less than the mass of reactants.`,
+            `(C) Gaseous products escape without following stoichiometry under standard conditions.`,
+            `(D) Physical indicators completely change chemical formulas of the reacting substances.`
+          ],
+          ans: `(A) Chemical and physical processes in ${chapter} strictly obey the law of conservation of mass and energy.`,
+          sol: `According to fundamental NCERT principles, all chemical and biological processes in ${chapter} conserve mass and energy.`,
+          rubric: '1 mark for selecting the correct NCERT concept.'
+        },
+        {
+          text: `In a standard NCERT laboratory activity for '${chapter}', which of the following observations is consistently recorded?`,
+          options: [
+            `(A) Experimental observations match theoretical predictions with clear physical changes (such as colour change or gas evolution).`,
+            `(B) Reactions occur spontaneously without any transfer of energy.`,
+            `(C) Chemical bonds break without requiring or releasing activation energy.`,
+            `(D) Soluble salts become completely insoluble in water at all temperatures.`
+          ],
+          ans: `(A) Experimental observations match theoretical predictions with clear physical changes (such as colour change or gas evolution).`,
+          sol: `Practical NCERT experiments in ${chapter} demonstrate characteristic physical and chemical changes.`,
+          rubric: '1 mark for selecting the valid experimental observation.'
+        },
+        {
+          text: `Which of the following factors directly influences the rate or outcome of reactions and processes in '${chapter}'?`,
+          options: [
+            `(A) Temperature, concentration of reactants, and presence of a suitable catalyst.`,
+            `(B) Purely arbitrary external units of measurement.`,
+            `(C) The geographic altitude of the laboratory regardless of pressure.`,
+            `(D) Random variations completely independent of chemical reactivity.`
+          ],
+          ans: `(A) Temperature, concentration of reactants, and presence of a suitable catalyst.`,
+          sol: `Reaction rates in ${chapter} depend on temperature, concentration, and catalytic activity per NCERT.`,
+          rubric: '1 mark for identifying the governing physical factors.'
+        }
+      ];
+      const picked = sciMcqs[seed % sciMcqs.length];
+      return {
+        chapter,
+        text: picked.text,
+        options: picked.options,
+        ans: picked.ans,
+        sol: picked.sol,
+        rubric: '1 mark for selecting the correct NCERT statement.'
+      };
+    }
+
+    if (type === 'Assertion-Reason') {
+      const sciArs = [
+        {
+          text: `**Assertion (A):** The chemical reactions and physiological processes in '${chapter}' can be verified through reproducible NCERT school laboratory activities.\n**Reason (R):** Natural scientific phenomena in '${chapter}' obey established universal principles such as conservation of mass, momentum, and electrical charge.`,
+          options: [
+            '(A) Both (A) and (R) are true, and (R) is the correct explanation of (A).',
+            '(B) Both (A) and (R) are true, but (R) is NOT the correct explanation of (A).',
+            '(C) (A) is true, but (R) is false.',
+            '(D) (A) is false, but (R) is true.'
+          ],
+          ans: '(A) Both (A) and (R) are true, and (R) is the correct explanation of (A).',
+          sol: 'Scientific processes in NCERT Class 10 Science are experimentally verifiable and follow conservation laws.',
+          rubric: '1 mark for correct evaluation.'
+        },
+        {
+          text: `**Assertion (A):** In '${chapter}', biological organisms and chemical systems continuously exchange matter and energy with their immediate surroundings.\n**Reason (R):** Living organisms are open biological systems that require continuous nutrition and respiration to maintain life processes.`,
+          options: [
+            '(A) Both (A) and (R) are true, and (R) is the correct explanation of (A).',
+            '(B) Both (A) and (R) are true, but (R) is NOT the correct explanation of (A).',
+            '(C) (A) is true, but (R) is false.',
+            '(D) (A) is false, but (R) is true.'
+          ],
+          ans: '(A) Both (A) and (R) are true, and (R) is the correct explanation of (A).',
+          sol: 'All biological and chemical entities maintain dynamic equilibrium through energy exchange.',
+          rubric: '1 mark for correct evaluation.'
+        }
+      ];
+      const picked = sciArs[seed % sciArs.length];
+      return {
+        chapter,
+        text: picked.text,
+        options: picked.options,
+        ans: picked.ans,
+        sol: picked.sol,
+        rubric: '1 mark for correct logical evaluation.'
+      };
+    }
+
+    if (type === 'Very Short Answer') {
+      const sciVsa = [
+        `State two key scientific facts or necessary conditions associated with '${chapter}' per the prescribed NCERT Class 10 syllabus.`,
+        `Write two observable characteristics or balanced chemical equations associated with the core processes in '${chapter}'.`,
+        `Identify the primary scientific principle and its practical application demonstrated in the NCERT activities of '${chapter}'.`
+      ];
+      const stem = sciVsa[seed % sciVsa.length];
+      return {
+        chapter,
+        text: stem,
+        ans: `Accurate dual scientific criteria stated in accordance with NCERT definitions for ${chapter}.`,
+        sol: '1. Identification of core NCERT concept (1 mark).\n2. Statement of observable consequence, example, or balanced equation (1 mark).',
+        rubric: '1 mark per valid criterion (Total 2 marks).'
+      };
+    }
+
+    if (type === 'Short Answer') {
+      const sciSa = [
+        `Explain the fundamental scientific principle and practical significance of '${chapter}' with two relevant NCERT examples or balanced chemical equations.`,
+        `Differentiate between the primary types or contrasting categories observed in '${chapter}' with one clear example of each.`,
+        `Describe an NCERT school laboratory activity to demonstrate the key phenomenon observed in '${chapter}', stating the apparatus, observation, and inference.`
+      ];
+      const stem = sciSa[seed % sciSa.length];
+      return {
+        chapter,
+        text: stem,
+        ans: `Complete 3-point structured scientific explanation per NCERT Class 10 standards for ${chapter}.`,
+        sol: '1. Core definition and scientific principle (1 mark).\n2. Step-by-step reasoning or balanced chemical equation (1 mark).\n3. Practical significance or real-life observation (1 mark).',
+        rubric: '1 mark per structured step (Total 3 marks).'
+      };
+    }
+
+    if (type === 'Long Answer') {
+      const sciLa = [
+        `(a) Describe the key principles, experimental activities, and observations associated with '${chapter}' per the NCERT syllabus.\n(b) Write balanced chemical equations or draw relevant neat labelled diagrams illustrating the mechanism of '${chapter}'.`,
+        `(a) Differentiate between the primary classifications studied under '${chapter}' with suitable examples.\n(b) Explain with reasons what will happen if the experimental conditions of '${chapter}' are altered in a laboratory.`
+      ];
+      const stem = sciLa[seed % sciLa.length];
+      return {
+        chapter,
+        text: stem,
+        ans: `Comprehensive 5-mark evaluation adhering strictly to NCERT Class 10 Science marking rubrics.`,
+        sol: '1. Theoretical foundation and definitions (2 marks).\n2. Relevant balanced chemical equations or neat labelled diagrams (2 marks).\n3. Practical applications or consequence of altered conditions (1 mark).',
+        rubric: '5 marks comprehensive breakdown per official CBSE marking scheme.'
+      };
+    }
+
+    if (type === 'Case-Based' || type === 'Structured Long Answer') {
+      const title = `NCERT Practical Activity: Experimental Investigations in ${chapter}`;
+      return {
+        chapter,
+        title,
+        text: `In a Class 10 Science laboratory, students carried out a practical activity based on the NCERT textbook to investigate the properties and reactions associated with ${chapter}. They observed physical and chemical changes under controlled conditions, recorded observations carefully, and drew conclusions aligned with board curriculum standards.`,
+        subQuestions: [
+          { subId: '(i)', marks: 1, questionText: `State the primary scientific observation or principle demonstrated in this activity of ${chapter}.`, answer: `Accurate identification of the underlying scientific principle in ${chapter}.` },
+          { subId: '(ii)', marks: 1, questionText: `Name the reactants and products, or the key biological/physical components involved in ${chapter}.`, answer: `Correct chemical formulas or anatomical/physical components identified for ${chapter}.` },
+          { subId: '(iii)', marks: 2, questionText: `Explain with scientific reasoning what will happen if the temperature or concentration is altered during this activity. Write a relevant chemical equation or give a biological justification.`, answer: `Detailed two-point justification demonstrating competency and critical thinking in ${chapter}.` }
+        ],
+        rubric: 'Sub-part (i) 1 mark, Sub-part (ii) 1 mark, Sub-part (iii) 2 marks.'
+      };
+    }
+  }
+
   if (type === 'MCQ') {
     const mcqStems = [
       {

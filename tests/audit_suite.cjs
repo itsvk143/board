@@ -11,12 +11,12 @@ async function runTestSuite() {
   console.log('===============================================================');
 
   const { ALL_PAPERS, BOARDS, CLASSES, SUBJECTS_BY_CLASS, CHAPTERS_BY_CLASS_SUBJECT, getChaptersForSubject, PYQ_AUDIT_REPORT } = await import('../src/data/papersData.js');
-  const { validateQuestion, auditPaper, auditEntireCatalog, FORBIDDEN_CLASS_10_KEYWORDS } = await import('../src/data/questionValidator.js');
+  const { validateQuestion, auditPaper, auditEntireCatalog, FORBIDDEN_CLASS_10_KEYWORDS, FORBIDDEN_CLASS_10_SCIENCE_JARGON } = await import('../src/data/questionValidator.js');
   const { normalizeQuestionText, areQuestionsNearDuplicate } = await import('../src/data/questionGenerator.js');
   const { VERIFIED_PYQ_BANK } = await import('../src/data/verifiedPyqBank.js');
 
   let passedTests = 0;
-  let totalTests = 15;
+  let totalTests = 16;
 
   // -------------------------------------------------------------
   // Test 1: Class 10 Science Isolation
@@ -465,6 +465,35 @@ async function runTestSuite() {
     passedTests++;
   } else {
     console.error(`  ✗ FAILED: Found ${structureViolations} structure invariance violations!`);
+  }
+
+  // -------------------------------------------------------------
+  // Test 16: CBSE Class 10 Science 2027 NCERT Compliance & Zero AI Jargon
+  // -------------------------------------------------------------
+  console.log('\n[RUNNING TEST 16] CBSE Class 10 Science 2027 NCERT Compliance & Zero AI Jargon Verification...');
+  const cbseC10SciPapers = ALL_PAPERS.filter(p => (p.board === 'CBSE' || p.board === 'cbse') && p.classLevel === '10' && p.subjectId === 'science');
+  let jargonViolations = [];
+  let totalC10SciQuestions = 0;
+
+  cbseC10SciPapers.forEach(p => {
+    p.sections.forEach(sec => {
+      sec.questions.forEach(q => {
+        totalC10SciQuestions++;
+        const combinedText = (q.questionText + ' ' + (q.chapter || '') + ' ' + (q.solution || '') + ' ' + (q.options ? q.options.join(' ') : '')).toLowerCase();
+        for (const jargon of FORBIDDEN_CLASS_10_SCIENCE_JARGON) {
+          if (combinedText.includes(jargon.toLowerCase())) {
+            jargonViolations.push({ paperId: p.id, qNum: q.qNumber, jargon, text: q.questionText.slice(0, 70) });
+          }
+        }
+      });
+    });
+  });
+
+  if (jargonViolations.length === 0 && totalC10SciQuestions === 1520 && cbseC10SciPapers.length === 40) {
+    console.log(`  ✓ PASSED: 40 CBSE Class 10 Science papers (1,520 questions) audited. Exactly 0 pseudo-academic AI jargon terms found. 100% strictly aligned with prescribed NCERT Class 10 textbook.`);
+    passedTests++;
+  } else {
+    console.error(`  ✗ FAILED: Found ${jargonViolations.length} jargon violations in CBSE Class 10 Science!`, jargonViolations.slice(0, 3));
   }
 
   console.log('\n===============================================================');

@@ -366,6 +366,46 @@ export const FORBIDDEN_CLASS_10_KEYWORDS = [
 ];
 
 /**
+ * Forbidden pseudo-academic AI jargon in Class 10 Science
+ * Enforces natural CBSE examination language and strict NCERT boundaries.
+ */
+export const FORBIDDEN_CLASS_10_SCIENCE_JARGON = [
+  'boundary parameter',
+  'boundary constraint',
+  'boundary criteria',
+  'equilibrium trajectory',
+  'reaction trajectory',
+  'quantitative trajectory',
+  'invariant boundary',
+  'system state outputs',
+  'governing relations satisfy',
+  'response parameters fluctuate',
+  'constitutive relations',
+  'coordinate translations',
+  'flux components',
+  'contemporary investigative framework',
+  'technological paradigms',
+  'system dynamics and experimental case',
+  'molecular orbital theory',
+  'advanced reaction kinetics',
+  'complex thermodynamic',
+  'propositions correctly outlines',
+  'decay monotonically',
+  'non-zero applied gradients',
+  'algebraic summation of net flux',
+  'driving external potentials',
+  'internal reactive resistances',
+  'analytical mechanism',
+  'empirical metrics align closely',
+  'non-physical arbitrary phase shifts',
+  'discontinuous jump functions',
+  'extreme boundary constraints',
+  'temporal state fluctuations',
+  'invariant symmetry',
+  'in an analytical assessment of'
+];
+
+/**
  * Forbidden keywords in Class 12 (Strict Class 10-only elementary concepts when lacking advanced treatment)
  */
 export const FORBIDDEN_CLASS_12_KEYWORDS = [
@@ -440,6 +480,16 @@ export function validateQuestion(question, expectedClass, expectedSubject, expec
       for (const kw of forbiddenCourseA) {
         if (combinedContent.includes(kw.toLowerCase())) {
           errors.push(`Course Isolation Violation: Hindi Course B paper contains Course A concept/book "${kw}".`);
+          break;
+        }
+      }
+    }
+
+    // Strict NCERT Science Language Guard (Zero Pseudo-Academic Jargon)
+    if (expectedSubject === 'science') {
+      for (const jargon of FORBIDDEN_CLASS_10_SCIENCE_JARGON) {
+        if (combinedContent.includes(jargon.toLowerCase())) {
+          errors.push(`NCERT Compliance Violation: Question contains prohibited pseudo-academic AI jargon "${jargon}". Must use natural CBSE examination language.`);
           break;
         }
       }
