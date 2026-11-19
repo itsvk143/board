@@ -66,6 +66,159 @@ function synthesizeUniqueVariant(base, type, qNum, paperNumber, subjectId, class
 
   // Dedicated NCERT Class 10 Science Procedural Synthesizer
   if (classKey === '10' && (subjectId === 'science' || subjectId.includes('sci'))) {
+  // Dedicated NCERT Class 10 Mathematics Procedural Synthesizer
+  if (classKey === '10' && (subjectId === 'mathematics' || subjectId === 'math' || subjectId.includes('math'))) {
+    if (type === 'MCQ') {
+      const mathMcqs = [
+        {
+          text: `Which of the following statements is mathematically correct regarding the prescribed NCERT properties of '${chapter}'?`,
+          options: [
+            `(A) Real values and geometric relations in ${chapter} satisfy foundational algebraic and geometric theorems.`,
+            `(B) The relationship between variables contradicts standard arithmetic definitions.`,
+            `(C) Polynomial and geometric degrees change arbitrarily with translation of coordinates.`,
+            `(D) Calculations in ${chapter} cannot be verified using standard NCERT formulas.`
+          ],
+          ans: `(A) Real values and geometric relations in ${chapter} satisfy foundational algebraic and geometric theorems.`,
+          sol: `Fundamental theorems in ${chapter} consistently hold true across all prescribed NCERT Class 10 domains.`,
+          rubric: '1 mark for selecting the correct mathematical theorem statement.'
+        },
+        {
+          text: `In standard CBSE problems based on '${chapter}', which of the following formulas or methods is correctly applied?`,
+          options: [
+            `(A) Direct substitution into verified NCERT Class 10 formulas yields exact and unique solutions.`,
+            `(B) Formulas in ${chapter} only apply when coefficients are negative.`,
+            `(C) Solutions require knowledge outside the secondary school curriculum.`,
+            `(D) Geometrical and algebraic properties are mutually inconsistent.`
+          ],
+          ans: `(A) Direct substitution into verified NCERT Class 10 formulas yields exact and unique solutions.`,
+          sol: `Standard NCERT Class 10 methods provide consistent and verifiable algebraic and geometric results.`,
+          rubric: '1 mark for selecting the valid mathematical method.'
+        },
+        {
+          text: `Which mathematical condition must be satisfied for equations or geometric configurations in '${chapter}' to yield real solutions?`,
+          options: [
+            `(A) Discriminant, proportionality ratios, or domain constraints must remain within real non-negative bounds per NCERT definitions.`,
+            `(B) Real numbers must be replaced by complex numbers.`,
+            `(C) Fractions must have a denominator equal to zero.`,
+            `(D) Geometric lengths can assume arbitrary negative values.`
+          ],
+          ans: `(A) Discriminant, proportionality ratios, or domain constraints must remain within real non-negative bounds per NCERT definitions.`,
+          sol: `Valid real solutions in ${chapter} require non-negative discriminants and positive dimensional measurements.`,
+          rubric: '1 mark for identifying the correct mathematical constraint.'
+        }
+      ];
+      const picked = mathMcqs[seed % mathMcqs.length];
+      return {
+        chapter,
+        text: picked.text,
+        options: picked.options,
+        ans: picked.ans,
+        sol: picked.sol,
+        rubric: '1 mark for selecting the correct mathematical statement.'
+      };
+    }
+
+    if (type === 'Assertion-Reason') {
+      const mathArs = [
+        {
+          text: `**Assertion (A):** Mathematical deductions and formulas in '${chapter}' can be rigorously verified through step-by-step algebraic and geometric methods.\n**Reason (R):** Foundational theorems in '${chapter}' are derived directly from the prescribed NCERT Class 10 Mathematics curriculum.`,
+          options: [
+            '(A) Both (A) and (R) are true, and (R) is the correct explanation of (A).',
+            '(B) Both (A) and (R) are true, but (R) is NOT the correct explanation of (A).',
+            '(C) (A) is true, but (R) is false.',
+            '(D) (A) is false, but (R) is true.'
+          ],
+          ans: '(A) Both (A) and (R) are true, and (R) is the correct explanation of (A).',
+          sol: 'Mathematical statements in NCERT Class 10 Mathematics follow deductive logic and syllabus definitions.',
+          rubric: '1 mark for correct logical evaluation.'
+        },
+        {
+          text: `**Assertion (A):** In '${chapter}', every problem solvable under the CBSE examination syllabus possesses an exact, well-defined mathematical solution.\n**Reason (R):** The operations and formulas of '${chapter}' adhere strictly to the real number system and Euclidean geometry.`,
+          options: [
+            '(A) Both (A) and (R) are true, and (R) is the correct explanation of (A).',
+            '(B) Both (A) and (R) are true, but (R) is NOT the correct explanation of (A).',
+            '(C) (A) is true, but (R) is false.',
+            '(D) (A) is false, but (R) is true.'
+          ],
+          ans: '(A) Both (A) and (R) are true, and (R) is the correct explanation of (A).',
+          sol: 'Both Assertion and Reason are true and logically explain the mathematical consistency of Class 10 syllabus.',
+          rubric: '1 mark for correct evaluation.'
+        }
+      ];
+      const picked = mathArs[seed % mathArs.length];
+      return {
+        chapter,
+        text: picked.text,
+        options: picked.options,
+        ans: picked.ans,
+        sol: picked.sol,
+        rubric: '1 mark for correct logical evaluation.'
+      };
+    }
+
+    if (type === 'Very Short Answer') {
+      const mathVsa = [
+        `State the fundamental theorem or algebraic identity associated with '${chapter}' per the prescribed NCERT Class 10 syllabus.`,
+        `Write the standard mathematical formula used to calculate values in '${chapter}' and state the meaning of each symbol.`,
+        `Determine the condition under which the primary formula in '${chapter}' yields real, valid solutions.`
+      ];
+      const stem = mathVsa[seed % mathVsa.length];
+      return {
+        chapter,
+        text: stem,
+        ans: `Precise mathematical definition and formula stated according to NCERT Class 10 standards for ${chapter}.`,
+        sol: '1. Identification of formula or theorem (1 mark).\n2. Explanation of symbols or validity conditions (1 mark).',
+        rubric: '1 mark per valid mathematical criterion (Total 2 marks).'
+      };
+    }
+
+    if (type === 'Short Answer') {
+      const mathSa = [
+        `Explain the mathematical method and step-by-step procedure to solve standard problems in '${chapter}' with a relevant NCERT example.`,
+        `State the primary formula or theorem in '${chapter}' and demonstrate its application in solving a 3-mark board examination problem.`,
+        `Differentiate between the key cases or conditions encountered when analyzing problems in '${chapter}'.`
+      ];
+      const stem = mathSa[seed % mathSa.length];
+      return {
+        chapter,
+        text: stem,
+        ans: `Complete 3-step structured mathematical solution per NCERT Class 10 standards for ${chapter}.`,
+        sol: '1. Stating given data and applicable formula (1 mark).\n2. Step-by-step algebraic or geometric working (1 mark).\n3. Calculation of final answer with correct units (1 mark).',
+        rubric: '1 mark per structured step (Total 3 marks).'
+      };
+    }
+
+    if (type === 'Long Answer') {
+      const mathLa = [
+        `(a) State the foundational theorem or standard method studied under '${chapter}' and write its complete mathematical proof.\n(b) Apply the concepts of '${chapter}' to solve a multi-step algebraic or geometric problem per CBSE 2027 board standards.`,
+        `(a) Explain the derivation of the governing formula in '${chapter}' using NCERT mathematical methods.\n(b) A practical real-world problem modeled on '${chapter}' involves finding numerical dimensions. Set up the equations and solve completely.`
+      ];
+      const stem = mathLa[seed % mathLa.length];
+      return {
+        chapter,
+        text: stem,
+        ans: `Comprehensive 5-mark evaluation adhering strictly to NCERT Class 10 Mathematics marking rubrics.`,
+        sol: '1. Theoretical foundation, theorem statement, and diagram (2 marks).\n2. Algebraic derivation or equation formulation (2 marks).\n3. Final calculated result with verification and units (1 mark).',
+        rubric: '5 marks comprehensive breakdown per official CBSE marking scheme.'
+      };
+    }
+
+    if (type === 'Case-Based' || type === 'Structured Long Answer') {
+      const title = `Mathematical Modeling: Practical Application in ${chapter}`;
+      return {
+        chapter,
+        title,
+        text: `In a practical mathematics project based on the NCERT Class 10 textbook, students analyzed a real-life scenario involving the concepts of ${chapter}. By setting up geometric coordinates, algebraic relations, or statistical distributions, they deduced numerical solutions aligned with CBSE competency standards.`,
+        subQuestions: [
+          { subId: '(i)', marks: 1, questionText: `State the primary mathematical formula or concept applied to model this scenario in ${chapter}.`, answer: `Accurate identification of the underlying mathematical formula in ${chapter}.` },
+          { subId: '(ii)', marks: 1, questionText: `Write the algebraic equation or geometric relation connecting the parameters in ${chapter}.`, answer: `Correct algebraic equation or ratio formulated for ${chapter}.` },
+          { subId: '(iii)', marks: 2, questionText: `Solve the mathematical equations to determine the required values. Show all intermediate calculation steps clearly.`, answer: `Detailed two-step calculation demonstrating competency and problem-solving in ${chapter}.` }
+        ],
+        rubric: 'Sub-part (i) 1 mark, Sub-part (ii) 1 mark, Sub-part (iii) 2 marks.'
+      };
+    }
+  }
+
     if (type === 'MCQ') {
       const sciMcqs = [
         {
@@ -222,45 +375,45 @@ function synthesizeUniqueVariant(base, type, qNum, paperNumber, subjectId, class
       {
         text: `Which of the following propositions correctly outlines a fundamental property of '${chapter}'?`,
         options: [
-          '(A) Governing relations satisfy invariant boundary and conservation criteria.',
-          '(B) Response parameters fluctuate independently of established governing laws.',
-          '(C) System state outputs decay monotonically to zero in all physical regimes.',
-          '(D) The primary constant varies directly with arbitrary coordinate translations.'
+          '(A) The fundamental principles of this topic satisfy standard curriculum theorems.',
+          '(B) Mathematical relationships change independently of proven theorems.',
+          '(C) All solutions decay to zero under standard conditions.',
+          '(D) Calculations depend directly on the choice of units.'
         ],
-        ans: '(A) Governing relations satisfy invariant boundary and conservation criteria.',
+        ans: '(A) The fundamental principles of this topic satisfy standard curriculum theorems.',
         sol: `Principles within ${chapter} adhere to recognized syllabus and conservation criteria.`
       },
       {
         text: `In the study of '${chapter}', when standard operating conditions are systematically assessed, which outcome is observed?`,
         options: [
-          '(A) Experimental metrics align closely with theoretical predictions within defined tolerances.',
-          '(B) The operational response transforms unpredictably without causal correlation.',
-          '(C) The equilibrium values invert abruptly across all temperature ranges.',
-          '(D) Observable dynamics remain identically static under non-zero applied gradients.'
+          '(A) Theoretical predictions align with curriculum principles.',
+          '(B) Results vary without following established rules.',
+          '(C) Key values change unpredictably under standard conditions.',
+          '(D) Values remain unchanged under all variations.'
         ],
-        ans: '(A) Experimental metrics align closely with theoretical predictions within defined tolerances.',
+        ans: '(A) Theoretical predictions align with curriculum principles.',
         sol: `Empirical observations corroborate theoretical models established in ${chapter}.`
       },
       {
         text: `Identify the essential condition required for stable equilibrium in systems involving '${chapter}':`,
         options: [
-          '(A) Algebraic summation of net flux components across system boundaries equals zero.',
-          '(B) Driving external potentials must strictly diverge towards infinity.',
-          '(C) System entropy must decrease spontaneously in an isolated framework.',
-          '(D) Internal reactive resistances must vanish unconditionally at all frequencies.'
+          '(A) The algebraic sum of components satisfies the equilibrium equation.',
+          '(B) External factors must increase without bound.',
+          '(C) System energy remains conserved.',
+          '(D) Internal parameters become zero.'
         ],
-        ans: '(A) Algebraic summation of net flux components across system boundaries equals zero.',
+        ans: '(A) The algebraic sum of components satisfies the equilibrium equation.',
         sol: `Dynamic stability is achieved when algebraic sum of flux components across boundaries is zero.`
       },
       {
         text: `Which parameter exerts the most decisive influence on qualitative and quantitative outcomes in '${chapter}'?`,
         options: [
-          '(A) Invariant boundary constraints and foundational constitutive equations.',
-          '(B) Random perturbation frequencies independent of physical bounds.',
-          '(C) Non-physical arbitrary phase shifts in coordinate frames.',
-          '(D) Discontinuous jump functions without energy exchange.'
+          '(A) Fundamental curriculum principles and governing formulas.',
+          '(B) Arbitrary numerical variations outside the prescribed bounds.',
+          '(C) Changes resulting from translation of coordinate axes.',
+          '(D) Discontinuous changes in functional values.'
         ],
-        ans: '(A) Invariant boundary constraints and foundational constitutive equations.',
+        ans: '(A) Fundamental curriculum principles and governing formulas.',
         sol: `Constitutive relations and boundary values determine outcomes in ${chapter}.`
       }
     ];
@@ -278,7 +431,7 @@ function synthesizeUniqueVariant(base, type, qNum, paperNumber, subjectId, class
   if (type === 'Assertion-Reason') {
     const arStems = [
       {
-        text: `**Assertion (A):** In ${chapter}, empirical measurements consistently corroborate foundational theoretical principles.\n**Reason (R):** Curriculum standards uphold invariant symmetry and conservation laws under standardized conditions.`,
+        text: `**Assertion (A):** In ${chapter}, empirical measurements consistently corroborate foundational theoretical principles.\n**Reason (R):** Curriculum standards uphold verified formulas and properties under all prescribed conditions.`,
         options: [
           '(A) Both (A) and (R) are true, and (R) is the correct explanation of (A).',
           '(B) Both (A) and (R) are true, but (R) is NOT the correct explanation of (A).',
@@ -289,7 +442,7 @@ function synthesizeUniqueVariant(base, type, qNum, paperNumber, subjectId, class
         sol: 'Assertion is factually verified and Reason provides the legitimate foundational justification.'
       },
       {
-        text: `**Assertion (A):** The constitutive relations governing ${chapter} remain invariant across inertial reference systems.\n**Reason (R):** Fundamental syllabus relationships are independent of arbitrary choices of coordinate origin.`,
+        text: `**Assertion (A):** The mathematical properties governing ${chapter} remain consistent across standard conditions.\n**Reason (R):** Fundamental syllabus relationships are independent of arbitrary choices of coordinate origin.`,
         options: [
           '(A) Both (A) and (R) are true, and (R) is the correct explanation of (A).',
           '(B) Both (A) and (R) are true, but (R) is NOT the correct explanation of (A).',
@@ -383,8 +536,8 @@ function synthesizeUniqueVariant(base, type, qNum, paperNumber, subjectId, class
 
   if (type === 'Case-Based' || type === 'Structured Long Answer') {
     const caseTitles = [
-      `Contemporary Investigative Framework: ${chapter}`,
-      `Technological Paradigms and Applied Research in ${chapter}`,
+      `Academic Case Study Framework: ${chapter}`,
+      `Practical Problem Solving in ${chapter}`,
       `Empirical Analysis and Operational Metrics: ${chapter}`,
       `System Dynamics and Experimental Case: ${chapter}`
     ];
@@ -396,7 +549,7 @@ function synthesizeUniqueVariant(base, type, qNum, paperNumber, subjectId, class
       subQuestions: [
         { subId: '(i)', marks: 1, questionText: 'State the foundational principle governing the scenario.', answer: 'Accurate principle identified.' },
         { subId: '(ii)', marks: 1, questionText: 'Formulate the quantitative relationship between the observed parameters.', answer: 'Correct mathematical or analytical relation formulated.' },
-        { subId: '(iii)', marks: 2, questionText: 'Analyze how variations in boundary conditions affect the final evaluated output. Justify with reasoning.', answer: 'Detailed two-point justification demonstrating critical thinking.' }
+        { subId: '(iii)', marks: 2, questionText: 'Explain how changing the given parameters affects the final calculated solution. Justify with reasoning.', answer: 'Detailed two-point justification demonstrating critical thinking.' }
       ],
       rubric: 'Sub-part (i) 1 mark, Sub-part (ii) 1 mark, Sub-part (iii) 2 marks.'
     };

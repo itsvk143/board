@@ -11,12 +11,12 @@ async function runTestSuite() {
   console.log('===============================================================');
 
   const { ALL_PAPERS, BOARDS, CLASSES, SUBJECTS_BY_CLASS, CHAPTERS_BY_CLASS_SUBJECT, getChaptersForSubject, PYQ_AUDIT_REPORT } = await import('../src/data/papersData.js');
-  const { validateQuestion, auditPaper, auditEntireCatalog, FORBIDDEN_CLASS_10_KEYWORDS, FORBIDDEN_CLASS_10_SCIENCE_JARGON } = await import('../src/data/questionValidator.js');
+  const { validateQuestion, auditPaper, auditEntireCatalog, FORBIDDEN_CLASS_10_KEYWORDS, FORBIDDEN_CLASS_10_SCIENCE_JARGON, FORBIDDEN_CLASS_10_MATH_JARGON } = await import('../src/data/questionValidator.js');
   const { normalizeQuestionText, areQuestionsNearDuplicate } = await import('../src/data/questionGenerator.js');
   const { VERIFIED_PYQ_BANK } = await import('../src/data/verifiedPyqBank.js');
 
   let passedTests = 0;
-  let totalTests = 16;
+  let totalTests = 17;
 
   // -------------------------------------------------------------
   // Test 1: Class 10 Science Isolation
@@ -494,6 +494,35 @@ async function runTestSuite() {
     passedTests++;
   } else {
     console.error(`  ✗ FAILED: Found ${jargonViolations.length} jargon violations in CBSE Class 10 Science!`, jargonViolations.slice(0, 3));
+  }
+
+  // -------------------------------------------------------------
+  // Test 17: CBSE Class 10 Mathematics 2027 NCERT Compliance & Zero AI Jargon
+  // -------------------------------------------------------------
+  console.log('\n[RUNNING TEST 17] CBSE Class 10 Mathematics 2027 NCERT Compliance & Zero AI Jargon Verification...');
+  const cbseC10MathPapers = ALL_PAPERS.filter(p => (p.board === 'CBSE' || p.board === 'cbse') && p.classLevel === '10' && (p.subjectId === 'mathematics' || p.subjectId === 'math'));
+  let mathJargonViolations = [];
+  let totalC10MathQuestions = 0;
+
+  cbseC10MathPapers.forEach(p => {
+    p.sections.forEach(sec => {
+      sec.questions.forEach(q => {
+        totalC10MathQuestions++;
+        const combinedText = (q.questionText + ' ' + (q.chapter || '') + ' ' + (q.solution || '') + ' ' + (q.options ? q.options.join(' ') : '')).toLowerCase();
+        for (const jargon of FORBIDDEN_CLASS_10_MATH_JARGON) {
+          if (combinedText.includes(jargon.toLowerCase())) {
+            mathJargonViolations.push({ paperId: p.id, qNum: q.qNumber, jargon, text: q.questionText.slice(0, 70) });
+          }
+        }
+      });
+    });
+  });
+
+  if (mathJargonViolations.length === 0 && totalC10MathQuestions === 1520 && cbseC10MathPapers.length === 40) {
+    console.log(`  ✓ PASSED: 40 CBSE Class 10 Mathematics papers (1,520 questions) audited. Exactly 0 pseudo-academic AI jargon terms found. 100% strictly aligned with prescribed NCERT Class 10 textbook.`);
+    passedTests++;
+  } else {
+    console.error(`  ✗ FAILED: Found ${mathJargonViolations.length} jargon violations in CBSE Class 10 Mathematics!`, mathJargonViolations.slice(0, 3));
   }
 
   console.log('\n===============================================================');

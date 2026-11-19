@@ -406,6 +406,53 @@ export const FORBIDDEN_CLASS_10_SCIENCE_JARGON = [
 ];
 
 /**
+ * Forbidden pseudo-academic AI jargon & senior secondary concepts in Class 10 Mathematics
+ * Enforces natural CBSE examination language and strict NCERT boundaries.
+ */
+export const FORBIDDEN_CLASS_10_MATH_JARGON = [
+  'boundary parameter',
+  'boundary constraint',
+  'boundary criteria',
+  'equilibrium trajectory',
+  'mathematical trajectory',
+  'polynomial parameterisation',
+  'polynomial parameterization',
+  'invariant boundary',
+  'system state outputs',
+  'governing relations satisfy',
+  'response parameters fluctuate',
+  'constitutive relations',
+  'coordinate translations',
+  'flux components',
+  'contemporary investigative framework',
+  'technological paradigms',
+  'propositions correctly outlines',
+  'decay monotonically',
+  'non-zero applied gradients',
+  'algebraic summation of net flux',
+  'driving external potentials',
+  'internal reactive resistances',
+  'analytical mechanism',
+  'empirical metrics align closely',
+  'non-physical arbitrary phase shifts',
+  'discontinuous jump functions',
+  'extreme boundary constraints',
+  'temporal state fluctuations',
+  'invariant symmetry',
+  'in an analytical assessment of',
+  'differentiation',
+  'derivative',
+  'integral',
+  'calculus',
+  'matrix of order',
+  'determinant',
+  'vector product',
+  'direction cosines',
+  'complex number',
+  'argand plane'
+];
+
+/**
  * Forbidden keywords in Class 12 (Strict Class 10-only elementary concepts when lacking advanced treatment)
  */
 export const FORBIDDEN_CLASS_12_KEYWORDS = [
@@ -490,6 +537,16 @@ export function validateQuestion(question, expectedClass, expectedSubject, expec
       for (const jargon of FORBIDDEN_CLASS_10_SCIENCE_JARGON) {
         if (combinedContent.includes(jargon.toLowerCase())) {
           errors.push(`NCERT Compliance Violation: Question contains prohibited pseudo-academic AI jargon "${jargon}". Must use natural CBSE examination language.`);
+          break;
+        }
+      }
+    }
+
+    // Strict NCERT Mathematics Language Guard (Zero Senior Secondary Jargon)
+    if (expectedSubject === 'mathematics' || expectedSubject === 'math') {
+      for (const jargon of FORBIDDEN_CLASS_10_MATH_JARGON) {
+        if (combinedContent.includes(jargon.toLowerCase())) {
+          errors.push(`NCERT Math Compliance Violation: Question contains prohibited senior concept/AI jargon "${jargon}". Must remain within Class 10 NCERT.`);
           break;
         }
       }
