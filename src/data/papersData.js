@@ -21,7 +21,8 @@ export const SUBJECTS_BY_CLASS = {
     { id: 'mathematics', name: 'Mathematics', icon: '📐' },
     { id: 'science', name: 'Science', icon: '🔬' },
     { id: 'social-science', name: 'Social Science', icon: '🌍' },
-    { id: 'english', name: 'English Language & Lit', icon: '📖' },
+    { id: 'english-184', name: 'English Language & Lit', code: '184', icon: '📖', textbooks: 'First Flight & Footprints' },
+    { id: 'english-101', name: 'English Communicative', code: '101', icon: '🗣️', textbooks: 'Interact in English' },
     { id: 'hindi-a', name: 'Hindi Course A', code: '002', icon: '✍️', textbooks: 'Kshitij & Kritika' },
     { id: 'hindi-b', name: 'Hindi Course B', code: '085', icon: '📖', textbooks: 'Sparsh & Sanchayan' },
     { id: 'computer-applications', name: 'Computer Applications & IT', icon: '💻' },
@@ -108,13 +109,32 @@ export const CHAPTERS_BY_CLASS_SUBJECT = {
       'Money and Credit',
       'Globalisation and the Indian Economy'
     ],
+    'english-184': [
+      'Reading Skills: Discursive & Factual Case Passages',
+      'Applied Grammar: Tenses, Modals, Concord & Reported Speech',
+      'Writing Skills: Formal Letters (Editor, Complaint, Inquiry, Order)',
+      'Writing Skills: Analytical Paragraph from Cues & Data',
+      'First Flight (Prose): Lencho, Mandela, Anne Frank, Glimpses, Mijbil, Valli, Benares, Proposal',
+      'First Flight (Poetry): Frost, Norris, Klein, Rich, Sandburg, Nash & Yeats Poems',
+      'Footprints Without Feet: Herriot, Ruskin Bond, Arthur, Canning, Wells, Ebright, Loisel, Bholi'
+    ],
+    'english-101': [
+      'Reading Skills: Literary, Factual & Discursive Passages',
+      'Writing Skills: Notice, Message, Article & Factual Description',
+      'Writing Skills: Formal & Informal Letters',
+      'Applied Grammar: Gap Filling, Editing, Omission & Sentence Reordering',
+      'Literature Reader (Fiction): Two Gentlemen of Verona, Mrs Packletide, The Letter, Shady Plot, Patol Babu, Virtually True',
+      'Literature Reader (Poetry): Frog & Nightingale, Mirror, Not Marble, Ozymandias, Ancient Mariner, Snake',
+      'Literature Reader (Drama): The Dear Departed & Julius Caesar'
+    ],
     'english': [
-      'Reading Comprehension & Prose',
-      'First Flight: Prose & Poetry Analysis',
-      'Footprints Without Feet (Supplementary)',
-      'Analytical Paragraph Writing',
-      'Formal Letter & Grammar',
-      'Poetry Analysis & Literary Devices'
+      'Reading Skills: Discursive & Factual Case Passages',
+      'Applied Grammar: Tenses, Modals, Concord & Reported Speech',
+      'Writing Skills: Formal Letters (Editor, Complaint, Inquiry, Order)',
+      'Writing Skills: Analytical Paragraph from Cues & Data',
+      'First Flight (Prose): Lencho, Mandela, Anne Frank, Glimpses, Mijbil, Valli, Benares, Proposal',
+      'First Flight (Poetry): Frost, Norris, Klein, Rich, Sandburg, Nash & Yeats Poems',
+      'Footprints Without Feet: Herriot, Ruskin Bond, Arthur, Canning, Wells, Ebright, Loisel, Bholi'
     ],
     'hindi-a': [
       'क्षितिज: काव्य खंड (सूरदास के पद, तुलसीदास, जयशंकर प्रसाद, निराला, नागार्जुन, मंगलेश डबराल)',
@@ -374,12 +394,32 @@ export const CHAPTERS_BY_SUBJECT = {
     'Money and Credit',
     'Print Culture and the Modern World'
   ],
+  'english-184': [
+    'Reading Skills: Discursive & Factual Case Passages',
+    'Applied Grammar: Tenses, Modals, Concord & Reported Speech',
+    'Writing Skills: Formal Letters (Editor, Complaint, Inquiry, Order)',
+    'Writing Skills: Analytical Paragraph from Cues & Data',
+    'First Flight (Prose): Lencho, Mandela, Anne Frank, Glimpses, Mijbil, Valli, Benares, Proposal',
+    'First Flight (Poetry): Frost, Norris, Klein, Rich, Sandburg, Nash & Yeats Poems',
+    'Footprints Without Feet: Herriot, Ruskin Bond, Arthur, Canning, Wells, Ebright, Loisel, Bholi'
+  ],
+  'english-101': [
+    'Reading Skills: Literary, Factual & Discursive Passages',
+    'Writing Skills: Notice, Message, Article & Factual Description',
+    'Writing Skills: Formal & Informal Letters',
+    'Applied Grammar: Gap Filling, Editing, Omission & Sentence Reordering',
+    'Literature Reader (Fiction): Two Gentlemen of Verona, Mrs Packletide, The Letter, Shady Plot, Patol Babu, Virtually True',
+    'Literature Reader (Poetry): Frog & Nightingale, Mirror, Not Marble, Ozymandias, Ancient Mariner, Snake',
+    'Literature Reader (Drama): The Dear Departed & Julius Caesar'
+  ],
   'english': [
-    'Reading Comprehension & Prose',
-    'Poetry Analysis & Devices',
-    'Analytical Paragraph Writing',
-    'Formal Letter & Grammar',
-    'Literature in Context'
+    'Reading Skills: Discursive & Factual Case Passages',
+    'Applied Grammar: Tenses, Modals, Concord & Reported Speech',
+    'Writing Skills: Formal Letters (Editor, Complaint, Inquiry, Order)',
+    'Writing Skills: Analytical Paragraph from Cues & Data',
+    'First Flight (Prose): Lencho, Mandela, Anne Frank, Glimpses, Mijbil, Valli, Benares, Proposal',
+    'First Flight (Poetry): Frost, Norris, Klein, Rich, Sandburg, Nash & Yeats Poems',
+    'Footprints Without Feet: Herriot, Ruskin Bond, Arthur, Canning, Wells, Ebright, Loisel, Bholi'
   ],
   'computer-science': [
     'Python Functions & File Handling',
@@ -594,7 +634,7 @@ export function buildQuestionPaperCatalog() {
             subject: subj.name,
             subjectId,
             subjectCode: subj.code || null,
-            course: subj.id === 'hindi-a' ? 'HINDI_A' : (subj.id === 'hindi-b' ? 'HINDI_B' : null),
+            course: subj.id === 'hindi-a' ? 'HINDI_A' : (subj.id === 'hindi-b' ? 'HINDI_B' : (subj.id === 'english-184' ? 'ENGLISH_184' : (subj.id === 'english-101' ? 'ENGLISH_101' : null))),
             textbooks: subj.textbooks || null,
             tier: 'practice',
             tierTitle: `Original Practice Paper #${i}`,
@@ -651,7 +691,7 @@ export function buildQuestionPaperCatalog() {
             subject: subj.name,
             subjectId,
             subjectCode: subj.code || null,
-            course: subj.id === 'hindi-a' ? 'HINDI_A' : (subj.id === 'hindi-b' ? 'HINDI_B' : null),
+            course: subj.id === 'hindi-a' ? 'HINDI_A' : (subj.id === 'hindi-b' ? 'HINDI_B' : (subj.id === 'english-184' ? 'ENGLISH_184' : (subj.id === 'english-101' ? 'ENGLISH_101' : null))),
             textbooks: subj.textbooks || null,
             tier: 'model',
             tierTitle: `Model / Blueprint Paper #${i}`,
@@ -714,7 +754,7 @@ export function buildQuestionPaperCatalog() {
             subject: subj.name,
             subjectId,
             subjectCode: subj.code || null,
-            course: subj.id === 'hindi-a' ? 'HINDI_A' : (subj.id === 'hindi-b' ? 'HINDI_B' : null),
+            course: subj.id === 'hindi-a' ? 'HINDI_A' : (subj.id === 'hindi-b' ? 'HINDI_B' : (subj.id === 'english-184' ? 'ENGLISH_184' : (subj.id === 'english-101' ? 'ENGLISH_101' : null))),
             textbooks: subj.textbooks || null,
             tier: 'pyq',
             tierTitle: `Official ${sessionYear} Archive`,

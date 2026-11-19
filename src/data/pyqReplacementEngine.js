@@ -72,9 +72,13 @@ export function findVerifiedPyqReplacement(duplicateQ, paper, usedTextsInPaper, 
 
   // Filter criteria
   const candidates = subjectPyqs.filter(cand => {
-    // 1. Course isolation guard (Hindi Course A vs Course B)
+    // 1. Course isolation guard (Hindi Course A vs B, English 184 vs 101)
     if (paper.subjectId === 'hindi-a' && cand.course !== 'HINDI_A') return false;
     if (paper.subjectId === 'hindi-b' && cand.course !== 'HINDI_B') return false;
+    if (paper.subjectId === 'english-184' && cand.course !== 'ENGLISH_184') return false;
+    if (paper.subjectId === 'english-101' && cand.course !== 'ENGLISH_101') return false;
+    if (paper.subjectId === 'english-184' && cand.course !== 'ENGLISH_184') return false;
+    if (paper.subjectId === 'english-101' && cand.course !== 'ENGLISH_101') return false;
 
     // 2. Type & Marks match
     if (cand.type !== duplicateQ.type) return false;
@@ -98,6 +102,8 @@ export function findVerifiedPyqReplacement(duplicateQ, paper, usedTextsInPaper, 
   const relaxedCandidates = subjectPyqs.filter(cand => {
     if (paper.subjectId === 'hindi-a' && cand.course !== 'HINDI_A') return false;
     if (paper.subjectId === 'hindi-b' && cand.course !== 'HINDI_B') return false;
+    if (paper.subjectId === 'english-184' && cand.course !== 'ENGLISH_184') return false;
+    if (paper.subjectId === 'english-101' && cand.course !== 'ENGLISH_101') return false;
     const candNorm = normalizeQuestionText(cand.questionText);
     return !usedTextsInPaper.has(candNorm) && cand.marks === duplicateQ.marks;
   });

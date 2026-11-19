@@ -1,5 +1,7 @@
 import { CLASS_10_MATH_BANK } from './class10MathBank.js';
 import { CLASS_10_SCIENCE_BANK } from './class10ScienceBank.js';
+import { CLASS_10_ENGLISH_184_BANK } from './class10English184Bank.js';
+import { CLASS_10_ENGLISH_101_BANK } from './class10English101Bank.js';
 /**
  * Class 10 Authentic Question Bank Repository
  * LV Institute Board Examination System
@@ -275,113 +277,19 @@ export const CLASS_10_QUESTIONS = {
   },
 
   // ==========================================
-  // 5. CLASS 10 ENGLISH LANGUAGE & LITERATURE
+  // 5A. CLASS 10 ENGLISH LANGUAGE & LITERATURE (CODE 184)
+  // Textbooks: First Flight & Footprints Without Feet
   // ==========================================
-  'english': {
-    mcqs: [
-      {
-        text: 'In Robert Frost\'s poem "Fire and Ice", what does "Fire" symbolically represent?',
-        chapter: 'Poetry Analysis & Devices',
-        options: ['(A) Cold indifference', '(B) Burning desire and greed', '(C) Natural disaster', '(D) Scientific advancement'],
-        ans: '(B) Burning desire and greed',
-        sol: 'Frost associates fire with intense passions, lust, unbridled ambition, and greed that can consume humanity.',
-        rubric: '1 mark for poetic device symbolism.'
-      },
-      {
-        text: 'Choose the option that correctly completes the sentence with appropriate subject-verb agreement: "Neither the teacher nor the students ______ present in the auditorium."',
-        chapter: 'Formal Letter & Grammar',
-        options: ['(A) was', '(B) were', '(C) is', '(D) has been'],
-        ans: '(B) were',
-        sol: 'When subjects are joined by \'neither... nor\', the verb agrees with the closer subject (\'students\' is plural, so \'were\').',
-        rubric: '1 mark for subject-verb agreement rule.'
-      },
-      {
-        text: 'What did Lencho compare the large falling raindrops to when the storm began?',
-        chapter: 'Reading Comprehension & Prose',
-        options: ['(A) Frozen pearls', '(B) New silver coins', '(C) Diamonds', '(D) Golden grains'],
-        ans: '(B) New silver coins',
-        sol: 'Lencho anticipated that the rain would guarantee a rich harvest, comparing raindrops to 10-cent and 5-cent new coins.',
-        rubric: '1 mark for literary recall.'
-      }
-    ],
-    ars: [
-      {
-        text: '**Assertion (A):** In "A Letter to God", Lencho\'s faith in God was unquestioning, naive, and absolute.\n**Reason (R):** Instead of doubting God when he received only 70 pesos, he firmly accused the post office employees of being a "bunch of crooks".',
-        chapter: 'Reading Comprehension & Prose',
-        options: [
-          '(A) Both A and R are true and R is the correct explanation of A.',
-          '(B) Both A and R are true but R is NOT the correct explanation of A.',
-          '(C) A is true but R is false.',
-          '(D) A is false but R is true.'
-        ],
-        ans: '(A) Both A and R are true and R is the correct explanation of A.',
-        sol: 'Lencho\'s supreme confidence in divine perfection blinded him to the human kindness of the postmaster.',
-        rubric: '1 mark for character analysis.'
-      }
-    ],
-    vsa: [
-      {
-        text: 'How does the tiger behave inside the cage in comparison to his natural habitat in Leslie Norris\'s poem "A Tiger in the Zoo"?',
-        chapter: 'Poetry Analysis & Devices',
-        ans: 'In cage: stalks in quiet rage on velvet pads; In wild: lurks in shadow near water holes to hunt deer.',
-        sol: 'Inside the cramped concrete cell, the tiger paces in helpless, quiet anger. In his natural jungle habitat, he would lurk in the shadow and slide through long grass near water holes to ambush plump deer.',
-        rubric: '1 mark for cage description; 1 mark for wild contrast.'
-      },
-      {
-        text: 'Why was Dr. James Herriot tempted to keep Tricki as a permanent guest at the surgery?',
-        chapter: 'Literature in Context',
-        ans: 'Mrs. Pumphrey sent fresh eggs, wine, and brandy daily for Tricki, which the doctors enjoyed.',
-        sol: 'Mrs. Pumphrey sent fresh eggs, bottles of wine, and fine brandy daily to enrich Tricki\'s convalescence, providing Herriot and his partners with delightful breakfasts and lavish lunches.',
-        rubric: '2 marks for explaining the humorous culinary incentive.'
-      }
-    ],
-    sa: [
-      {
-        text: 'How did Bholi\'s school teacher play an instrumental role in transforming her life?',
-        chapter: 'Literature in Context',
-        ans: 'Gave affection, encouraged speech without stammering, provided books, inspired self-respect to reject dowry.',
-        sol: '1. Compassion and Encouragement: The teacher spoke with soothing warmth, unlike her dismissive family, inspiring Bholi to overcome her stammer.\n2. Education and Awareness: Provided pictorial books and broadened her horizons, making her educated and self-reliant.\n3. Self-Respect: Empowered Bholi with the moral courage to reject the greedy, elderly Bishamber when he demanded dowry.',
-        rubric: '1 mark per transformation milestone (total 3 marks).'
-      }
-    ],
-    la: [
-      {
-        text: '"True freedom cannot be taken for granted; it demands sacrifice, collective resilience, and moral courage." Justify this theme with reference to Nelson Mandela: Long Walk to Freedom.',
-        chapter: 'Reading Comprehension & Prose',
-        ans: 'Mandela\'s realization of illusory boyhood freedom, hunger for freedom for his people, transformation into courageous leader.',
-        sol: '1. Illusory Freedom: Mandela realized that the freedom of his boyhood was an illusion; as a young man, he discovered that his freedom had already been taken from him.\n2. Greater Purpose: His hunger for personal freedom transformed into a profound hunger for the freedom of his oppressed people.\n3. Courage Redefined: He learned that courage is not the absence of fear, but the triumph over it. The brave man is not he who does not feel afraid, but he who conquers that fear.\n4. Dual Obligations: Reconciling obligations to family and obligations to one\'s community requires immense moral fortitude.\n5. The Oppressor\'s Prison: Mandela observed that the oppressor is as much a prisoner of hatred and prejudice as the oppressed is a prisoner of subjugation.',
-        rubric: '1 mark for boyhood contrast, 1 mark for collective struggle, 1 mark for concept of courage, 1 mark for twin obligations, 1 mark for moral conclusion.'
-      }
-    ],
-    caseStudies: [
-      {
-        title: 'Case Study: Unseen Discursive Passage on Digital Literacy and Reading Habits',
-        text: 'The twenty-first century has witnessed an exponential surge in digital content consumption. While digital reading provides instantaneous access to vast repositories of research, cognitive psychologists highlight a concerning trend: the decline of deep reading. Deep reading engages sophisticated cognitive processes—critical thinking, analogical reasoning, and empathy. When we skim algorithmic bite-sized feeds on smartphones, our neural circuitry adapts to scanning rather than sustained comprehension.',
-        chapter: 'Analytical Paragraph Writing',
-        subQuestions: [
-          {
-            subId: '(i)',
-            marks: 1,
-            questionText: 'What is the primary cognitive difference between "skimming" digital feeds and "deep reading"?',
-            answer: 'Deep reading stimulates critical analysis, analogical reasoning, and empathy, whereas skimming trains neural circuits only for rapid, superficial scanning.'
-          },
-          {
-            subId: '(ii)',
-            marks: 1,
-            questionText: 'Identify the tone of the author regarding smartphone reading habits.',
-            answer: 'Concerned, analytical, and evaluative.'
-          },
-          {
-            subId: '(iii)',
-            marks: 2,
-            questionText: 'Suggest two balanced strategies students can adopt to preserve deep reading skills in an era of digital dominance.',
-            answer: '1. Setting aside daily dedicated screen-free intervals for physical paperback reading.\n2. Practicing reflective annotation and summarizing concepts in longhand rather than passive scrolling.'
-          }
-        ],
-        rubric: 'Part (i) 1 mark, Part (ii) 1 mark, Part (iii) 2 marks for practical cognitive strategies.'
-      }
-    ]
-  },
+  'english-184': CLASS_10_ENGLISH_184_BANK,
+
+  // ==========================================
+  // 5B. CLASS 10 ENGLISH COMMUNICATIVE (CODE 101)
+  // Textbooks: Interact in English Series
+  // ==========================================
+  'english-101': CLASS_10_ENGLISH_101_BANK,
+
+  // Backward compatibility alias
+  'english': CLASS_10_ENGLISH_184_BANK,
 
   // ==========================================
   // 6. CLASS 10 HINDI COURSE A (CODE 002)
